@@ -1,0 +1,65 @@
+[project]
+name = "ma-backend"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "django>=5.1.2",
+    "django-ninja>=1.3.0",
+    "uvicorn>=0.31.1",
+    "python-dotenv>=1.0.1",
+]
+
+[tool.uv]
+dev-dependencies = [
+    "coverage>=7.6.2",
+    "factory-boy>=3.3.1",
+    "pyright>=1.1.384",
+    "pytest-django>=4.9.0",
+    "pytest>=8.3.3",
+    "ruff>=0.6.9",
+    "taskipy>=1.13.0",
+]
+
+[tool.taskipy.tasks]
+lint_check = "ruff check"
+lint_format = "ruff format & ruff check --fix"
+lint_unsafe = "ruff format & ruff check --unsafe-fixes --fix"
+
+pre_test = "coverage erase"
+test = "coverage run -m pytest"
+post_test = "coverage html"
+
+[tool.ruff]
+exclude = [
+    ".git",
+    ".gitignore",
+    ".vscode",
+    ".venv",
+    ".pytest_cache",
+    ".ruff_cache",
+    ".mypy_cache",
+    "__pycache__",
+]
+
+line-length = 88
+indent-width = 4
+
+[tool.ruff.lint]
+select = []
+ignore = []
+
+fixable = ["ALL"]
+unfixable = []
+
+dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
+
+[tool.ruff.format]
+quote-style = "double"
+
+indent-style = "space"
+
+skip-magic-trailing-comma = false
+
+line-ending = "auto"
