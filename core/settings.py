@@ -45,6 +45,8 @@ INSTALLED_APPS = [
 
 APPLICATION_APPS = ["api", "lawsuits"]
 
+INSTALLED_APPS += APPLICATION_APPS
+
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",

@@ -1,11 +1,8 @@
 from django.db import models
 
-from lawsuits.models.commons import BaseModel, DocumentType, Files
+from lawsuits.models.commons import BaseModel, CpfField, DocumentType, Files
 from lawsuits.models.lawyer import Lawyer
 from lawsuits.models.phone import Phone
-
-
-class CpfField(models.CharField): ...
 
 
 class Customer(BaseModel):
@@ -16,21 +13,21 @@ class Customer(BaseModel):
 class CustomerReferred(BaseModel):
     class Meta(BaseModel.Meta):
         abstract = True
-        unique_together = ("customer", "referred")
+        unique_together = ("customer", "reffered_by")
 
 
-class CustomerReferredFromCustomer(CustomerReferred):
-    customer = models.ForeignKey(
-        Customer, on_delete=models.CASCADE, related_name="customer"
-    )
-    referred_customer = models.ForeignKey(
-        Customer, on_delete=models.CASCADE, related_name="referred_customer"
-    )
-
-
-class CustomerReferredFromLawyer(CustomerReferred):
+class CustomerReferredByCustomer(CustomerReferred):
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
-    lawyer = models.ForeignKey(Lawyer, on_delete=models.CASCADE)
+    reffered_by = models.ForeignKey(
+        Customer, on_delete=models.CASCADE, related_name="referred_customers"
+    )
+
+
+class CustomerReferredByLawyer(CustomerReferred):
+    customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
+    reffered_by = models.ForeignKey(
+        Lawyer, on_delete=models.CASCADE, related_name="referred_customers"
+    )
 
 
 class CustomerDocument(BaseModel):
@@ -66,7 +63,8 @@ class CustomerAddress(BaseModel):
 
 
 class PhysicalPersonCustomer(BaseModel):
-    cpf = models.CharField(max_length=11)
+    # TODO: Test it
+    cpf = CpfField()
     rg = models.CharField(max_length=20)
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
 
@@ -75,3 +73,6 @@ class JuridicalPersonCustomer(BaseModel):
     social_reason = models.CharField(max_length=255)
     cnpj = models.CharField(max_length=14)
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
+
+    name = models.CharField(max_length=255)
+    birth_date = models.DateField()

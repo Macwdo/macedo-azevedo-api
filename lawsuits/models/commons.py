@@ -1,4 +1,38 @@
 from django.db import models
+from django.core.exceptions import ValidationError
+
+
+class CpfField(models.CharField):
+    def __init__(self, *args, **kwargs):
+        kwargs["max_length"] = 11
+        super().__init__(*args, **kwargs)
+
+    def validate(self, value, model_instance):
+        super().validate(value, model_instance)
+        self.validate_cpf(value)
+
+    def validate_cpf(self, value):
+        cpf = self.clean_cpf(value)
+        if not self.is_valid_cpf(cpf):
+            raise ValidationError("Invalid CPF")
+
+    def clean_cpf(self, value):
+        return "".join(filter(str.isdigit, value))
+
+    def is_valid_cpf(self, cpf):
+        if len(cpf) != 11:
+            return False
+        if cpf == cpf[::-1]:
+            return False
+        cpf_digits = list(map(int, cpf))
+        first_digit = self.calculate_digit(cpf_digits[:9])
+        second_digit = self.calculate_digit(cpf_digits[:10])
+        return cpf_digits[9] == first_digit and cpf_digits[10] == second_digit
+
+    def calculate_digit(self, digits):
+        total = sum((i + 2) * digit for i, digit in enumerate(digits[::-1]))
+        remainder = total % 11
+        return (11 - remainder) % 10
 
 
 class BaseModel(models.Model):
