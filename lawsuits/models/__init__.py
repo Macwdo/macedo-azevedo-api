@@ -1,6 +1,14 @@
-from .customer import *
-from .address import *
-from .commons import *
-from .lawsuit import *
-from .lawyer import *
-from .phone import *
+from .lawyer import Lawyer
+from .lawsuit import Lawsuit
+from .customer import (
+    Customer,
+    CustomerAddress,
+    CustomerDocument,
+    CustomerDocumentFile,
+    CustomerReferred,
+    CustomerPhone,
+    CustomerEmail,
+    CustomerReferredByCustomer,
+    CustomerReferredByLawyer,
+    JuridicalPersonCustomer,
+)

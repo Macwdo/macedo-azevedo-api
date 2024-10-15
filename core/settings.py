@@ -43,7 +43,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
 ]
 
-APPLICATION_APPS = ["api", "lawsuits"]
+APPLICATION_APPS = ["api", "authentication", "common", "lawfirm", "lawsuits"]
 
 INSTALLED_APPS += APPLICATION_APPS
 
@@ -81,18 +81,28 @@ WSGI_APPLICATION = "core.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "django.db.backends.postgresql",
+#         "NAME": getenv("DB_NAME", "postgres"),
+#         "USER": getenv("DB_USER", "postgres"),
+#         "PASSWORD": getenv("DB_PASSWORD", "postgres"),
+#         "HOST": getenv("DB_HOST", "localhost"),
+#         "PORT": getenv("DB_PORT", 5432),
+#         "TEST": {
+#             "NAME": "test_db",
+#         },
+#     },
+# }
+
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": getenv("DB_NAME", "postgres"),
-        "USER": getenv("DB_USER", "postgres"),
-        "PASSWORD": getenv("DB_PASSWORD", "postgres"),
-        "HOST": getenv("DB_HOST", "localhost"),
-        "PORT": getenv("DB_PORT", 5432),
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": BASE_DIR / "db.sqlite3",
         "TEST": {
-            "NAME": "test_db",
+            "NAME": "test_db.sqlite3",
         },
-    },
+    }
 }
 
 
@@ -114,13 +124,15 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+AUTH_USER_MODEL = "authentication.User"
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.1/topics/i18n/
 
-LANGUAGE_CODE = "en-us"
+LANGUAGE_CODE = "pt-br"
 
-TIME_ZONE = "UTC"
+TIME_ZONE = "America/Sao_Paulo"
 
 USE_I18N = True
 

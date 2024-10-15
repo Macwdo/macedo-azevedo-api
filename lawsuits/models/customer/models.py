@@ -1,8 +1,7 @@
 from django.db import models
 
-from lawsuits.models.commons import BaseModel, CpfField, DocumentType, Files
-from lawsuits.models.lawyer import Lawyer
-from lawsuits.models.phone import Phone
+from common.models import Address, BaseModel, CpfField, DocumentType, Files, Phone
+from lawsuits.models import Lawyer
 
 
 class Customer(BaseModel):
@@ -11,7 +10,7 @@ class Customer(BaseModel):
 
 
 class CustomerReferred(BaseModel):
-    class Meta(BaseModel.Meta):
+    class Meta:
         abstract = True
         unique_together = ("customer", "reffered_by")
 
@@ -56,10 +55,7 @@ class CustomerPhone(BaseModel):
 
 class CustomerAddress(BaseModel):
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
-    street = models.CharField(max_length=255)
-    city = models.CharField(max_length=255)
-    state = models.CharField(max_length=255)
-    zip_code = models.CharField(max_length=10)
+    address = models.ForeignKey(Address, on_delete=models.CASCADE)
 
 
 class PhysicalPersonCustomer(BaseModel):

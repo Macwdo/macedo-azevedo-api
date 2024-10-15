@@ -1,5 +1,5 @@
-from django.db import models
 from django.core.exceptions import ValidationError
+from django.db import models
 
 
 class CpfField(models.CharField):
@@ -43,7 +43,7 @@ class BaseModel(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
 
-class DocumentType(models.Model):
+class DocumentType(BaseModel):
     name = models.CharField(max_length=255)
 
     @staticmethod
@@ -54,6 +54,23 @@ class DocumentType(models.Model):
         return default_document_type
 
 
-class Files(models.Model):
+class Files(BaseModel):
     file = models.FileField()
     description = models.CharField(max_length=255)
+
+
+class Address(BaseModel):
+    street = models.CharField(max_length=255)
+    city = models.CharField(max_length=255)
+    state = models.CharField(max_length=255)
+    zip_code = models.CharField(max_length=10)
+
+
+class Phone(BaseModel):
+    phone = models.CharField(max_length=20)
+    ddi = models.CharField(max_length=5)
+    ddd = models.CharField(max_length=5)
+
+
+class Email(BaseModel):
+    email = models.EmailField()
