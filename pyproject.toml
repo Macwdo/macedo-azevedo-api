@@ -39,6 +39,8 @@ migrations = "python manage.py makemigrations"
 merge_migrations = "python manage.py merge_migrations"
 migrate = "python manage.py migrate"
 
+test_migrations = "rm -rf **/migrations/00* && python manage.py makemigrations && python manage.py migrate"
+remove_migrations = "rm -rf **/migrations/00*"
 
 
 [tool.ruff]

@@ -1,15 +1,9 @@
-import os
-from django import setup
-
-
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "core.settings")
-setup()
-
-from authentication.models import User
 from django.test import TestCase
 
 from api.views import OwnedByLawFirmGenericViewSet
+from authentication.models import User
 from authentication.tests.factories import UserFactory
+from lawsuits.models.lawyer import Lawyer
 
 
 class BaseOwnedByLawFirmGenericViewSetTests(TestCase):
@@ -25,6 +19,9 @@ class BaseOwnedByLawFirmGenericViewSetTests(TestCase):
         """
 
         user = UserFactory()
-        OwnedByLawFirmGenericViewSet().get_queryset()
+        viewset = OwnedByLawFirmGenericViewSet()
+        viewset.queryset = Lawyer.objects.all() # type: ignore
+        
+        queryset = viewset.get_queryset()
 
         assert 1 == 1

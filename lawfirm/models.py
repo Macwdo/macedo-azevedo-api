@@ -1,3 +1,4 @@
+from django.core.exceptions import ValidationError
 from django.db import models
 
 from common.models import Address, BaseModel, Email, Phone
@@ -10,7 +11,6 @@ class Account(BaseModel):
     name = models.CharField(max_length=100)
     user = models.ForeignKey(user_model, on_delete=models.PROTECT)
 
-
 class Company(BaseModel):
     social_reason = models.CharField(max_length=100)
     social_name = models.CharField(max_length=100)
@@ -19,11 +19,7 @@ class Company(BaseModel):
     account = models.ForeignKey(Account, on_delete=models.CASCADE)
     address = models.ForeignKey(Address, on_delete=models.CASCADE)
 
-
 class CompanyContacts(BaseModel):
-    class Meta:
-        unique_together = ["company", "main"]
-
     name = models.CharField(max_length=100)
 
     email = models.ForeignKey(Email, on_delete=models.CASCADE)
@@ -32,6 +28,22 @@ class CompanyContacts(BaseModel):
     company = models.ForeignKey(Company, on_delete=models.CASCADE)
     main = models.BooleanField(default=False)
 
+    def clean(self) -> None:
+        if not self.main:
+            return super().clean()
+
+        has_main_contact =  (
+            self
+            .objects
+            .filter(
+                company=self.company, 
+                main=True
+            ).exists()
+        )
+        if has_main_contact:
+            raise ValidationError("Main contact already exists")
+        
+        return super().clean()
 
 class LawFirm(BaseModel):
     name = models.CharField(max_length=100)

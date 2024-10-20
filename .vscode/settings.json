@@ -1,13 +1,12 @@
 {
-    "python.testing.unittestArgs": [
-        "-v",
-        "-s",
-        ".",
-        "-p",
-        "test_*.py"
-    ],
+    "python.testing.unittestArgs": [],
     "python.testing.pytestEnabled": false,
     "python.testing.unittestEnabled": true,
-    "python.experiments.optInto": ["pythonTestAdapter"] 
+    "python.experiments.optInto": ["pythonTestAdapter"] ,
+    "editor.codeActionsOnSave": {
+        "source.fixAll.ruff": "always",
+        "source.organizeImports.ruff": "always",
+        "source.unusedImports": "always",
+    }
 }
 
