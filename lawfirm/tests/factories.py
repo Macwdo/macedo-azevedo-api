@@ -3,7 +3,7 @@ import faker
 
 from authentication.tests.factories import UserFactory
 from common.tests.factories import AddressFactory
-from lawfirm.models import Account, Company, LawFirm, LawFirmUser
+from lawfirm.models import Account, Company, LawFirm, LawFirmOwner
 
 _faker = faker.Faker("pt_BR")
 
@@ -13,7 +13,6 @@ class AccountFactory(factory.django.DjangoModelFactory):
         model = Account
 
     name = factory.LazyAttribute(lambda _: _faker.company())
-    user = factory.SubFactory("authentication.tests.factories.UserFactory")
 
 
 class CompanyFactory(factory.django.DjangoModelFactory):
@@ -26,7 +25,14 @@ class CompanyFactory(factory.django.DjangoModelFactory):
 
     account = factory.SubFactory(AccountFactory)
     address = factory.SubFactory(AddressFactory)
-    main = False
+
+
+class LawFirmOwnerFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = LawFirmOwner
+
+    juridical_person_owner = factory.SubFactory(CompanyFactory)
+    physical_person_owner = factory.SubFactory(AccountFactory)
 
 
 class LawFirmFactory(factory.django.DjangoModelFactory):
@@ -35,14 +41,4 @@ class LawFirmFactory(factory.django.DjangoModelFactory):
 
     name = factory.LazyAttribute(lambda _: _faker.company())
     image = factory.django.ImageField(color="blue")
-
-    account = factory.SubFactory(AccountFactory)
-    company = factory.SubFactory(CompanyFactory)
-
-
-class LawFirmUserFactory(factory.django.DjangoModelFactory):
-    class Meta:
-        model = LawFirmUser
-
-    user = factory.SubFactory(UserFactory)
-    lawfirm = factory.SubFactory(LawFirmFactory)
+    owner = factory.SubFactory(LawFirmOwnerFactory)

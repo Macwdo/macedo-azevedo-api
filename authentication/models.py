@@ -14,7 +14,12 @@ class User(AbstractUser, BaseModel):
         null=True,
         blank=True,
     )
-
+    account = models.OneToOneField(
+        "lawfirm.Account",
+        on_delete=models.PROTECT,
+        null=False,
+        blank=False,
+    )
     deleted_at = models.DateTimeField(auto_now_add=True)
     deleted_by = models.ForeignKey(
         "self",

@@ -28,7 +28,7 @@ class AddressFactory(factory.django.DjangoModelFactory):
     street = factory.LazyAttribute(lambda _: _faker.street_name())
     city = factory.LazyAttribute(lambda _: _faker.city())
     state = factory.LazyAttribute(lambda _: _faker.state())
-    zip_code = factory.LazyAttribute(lambda _: _faker.zipcode())
+    zip_code = factory.LazyAttribute(lambda _: _faker.lexify("ZIPCODE ?????"))
 
 
 class PhoneFactory(factory.django.DjangoModelFactory):

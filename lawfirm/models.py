@@ -9,7 +9,7 @@ user_model = get_user_model()
 
 class Account(BaseModel):
     name = models.CharField(max_length=100)
-    user = models.ForeignKey(user_model, on_delete=models.PROTECT)
+
 
 class Company(BaseModel):
     social_reason = models.CharField(max_length=100)
@@ -18,6 +18,7 @@ class Company(BaseModel):
 
     account = models.ForeignKey(Account, on_delete=models.CASCADE)
     address = models.ForeignKey(Address, on_delete=models.CASCADE)
+
 
 class CompanyContacts(BaseModel):
     name = models.CharField(max_length=100)
@@ -32,30 +33,63 @@ class CompanyContacts(BaseModel):
         if not self.main:
             return super().clean()
 
-        has_main_contact =  (
-            self
-            .objects
-            .filter(
-                company=self.company, 
-                main=True
-            ).exists()
-        )
+        has_main_contact = self.objects.filter(company=self.company, main=True).exists()
         if has_main_contact:
             raise ValidationError("Main contact already exists")
-        
+
         return super().clean()
+
 
 class LawFirm(BaseModel):
     name = models.CharField(max_length=100)
     image = models.ImageField()
+    owner = models.OneToOneField(
+        "LawFirmOwner",
+        on_delete=models.CASCADE,
+    )
 
-    account = models.ForeignKey(Account, on_delete=models.CASCADE)
-    company = models.ForeignKey(Company, on_delete=models.CASCADE)
 
+class LawFirmOwner(BaseModel):
+    class LawFirmOwnerType(models.TextChoices):
+        COMPANY = ("company", "Company")
+        ACCOUNT = ("account", "Account")
 
-class LawFirmUser(BaseModel):
-    user = models.ForeignKey(user_model, on_delete=models.CASCADE)
-    lawfirm = models.ForeignKey(LawFirm, on_delete=models.CASCADE)
+    physical_person_owner = models.ForeignKey(
+        "Account",
+        on_delete=models.CASCADE,
+        related_name="lawfirms",
+        null=True,
+        blank=True,
+    )
+    juridical_person_owner = models.ForeignKey(
+        "Company",
+        on_delete=models.CASCADE,
+        related_name="lawfirms",
+        null=True,
+        blank=True,
+    )
+
+    @property
+    def owner_type(self):
+        has_juridical_person_owner = self.juridical_person_owner is not None
+        has_physical_person_owner = self.physical_person_owner is not None
+
+        if not (has_juridical_person_owner or has_physical_person_owner):
+            raise ValidationError("LawFirmOwner was created without an owner")
+
+        if has_juridical_person_owner:
+            return self.LawFirmOwnerType.COMPANY
+
+        return self.LawFirmOwnerType.ACCOUNT
+
+    def clean(self) -> None:
+        has_juridical_person_owner = self.juridical_person_owner is not None
+        has_physical_person_owner = self.physical_person_owner is not None
+
+        if not (has_physical_person_owner and has_juridical_person_owner):
+            raise ValidationError("You need to set an owner to create a LawFirmOwner.")
+
+        return super().clean()
 
 
 class OwnedByLawFirmQuerySet(models.QuerySet):
@@ -63,9 +97,7 @@ class OwnedByLawFirmQuerySet(models.QuerySet):
         return self.filter(lawfirm=lawfirm)
 
 
-class OwnedByLawFirmManager(models.Manager):
-    def get_queryset(self):
-        return OwnedByLawFirmQuerySet(self.model, using=self._db)
+class OwnedByLawFirmManager(models.Manager): ...
 
 
 class OwnedByLawFirm(BaseModel):
@@ -73,4 +105,4 @@ class OwnedByLawFirm(BaseModel):
         abstract = True
 
     lawfirm = models.ForeignKey(LawFirm, on_delete=models.CASCADE)
-    objects = OwnedByLawFirmManager()
+    objects = OwnedByLawFirmManager.from_queryset(OwnedByLawFirmQuerySet)()
