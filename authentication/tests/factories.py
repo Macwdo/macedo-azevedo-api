@@ -18,7 +18,7 @@ class UserFactory(factory.django.DjangoModelFactory):
 
     email = factory.LazyAttribute(lambda _: _faker.email())
     account = factory.SubFactory("lawfirm.tests.factories.AccountFactory")
-
+    current_lawfirm = factory.SubFactory("lawfirm.tests.factories.LawFirmFactory")
     # lawfirms = factory.RelatedFactory("lawfirm.tests.factories.LawFirmUserFactory", "user")
     # current_lawfirm = factory.SubFactory(
     #     "lawfirm.tests.factories.LawFirmFactory",
