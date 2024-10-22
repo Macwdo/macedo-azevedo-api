@@ -2,11 +2,13 @@
     "python.testing.unittestArgs": [],
     "python.testing.pytestEnabled": false,
     "python.testing.unittestEnabled": true,
-    "python.experiments.optInto": ["pythonTestAdapter"] ,
+    "python.experiments.optInto": [
+        "pythonTestAdapter"
+    ],
     "editor.codeActionsOnSave": {
         "source.fixAll.ruff": "always",
         "source.organizeImports.ruff": "always",
-        "source.unusedImports": "always",
-    }
+        // "source.unusedImports": "always",
+    },
+    "editor.formatOnSave": true
 }
-

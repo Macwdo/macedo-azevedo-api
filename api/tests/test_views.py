@@ -1,9 +1,10 @@
-from django.test import TestCase
+from django.test import RequestFactory, TestCase
 
 from api.views import OwnedByLawFirmGenericViewSet
 from authentication.models import User
 from authentication.tests.factories import UserFactory
-from lawsuits.models.lawyer import Lawyer
+from lawsuits.models.customer.models import Customer
+from lawsuits.models.customer.tests.factories import CustomerFactory
 
 
 class BaseOwnedByLawFirmGenericViewSetTests(TestCase):
@@ -20,8 +21,20 @@ class BaseOwnedByLawFirmGenericViewSetTests(TestCase):
 
         user = UserFactory()
         viewset = OwnedByLawFirmGenericViewSet()
-        viewset.queryset = Lawyer.objects.all() # type: ignore
-        
+
+        customer_1 = CustomerFactory(lawfirm__name="Lawfirm 1")
+        customer_2 = CustomerFactory(lawfirm__name="Lawfirm 2")
+
+        user.current_lawfirm = customer_1.lawfirm
+        user.save()
+
+        viewset.queryset = Customer.objects.all()  # type: ignore
+        assert viewset.queryset.count() == 2
+
+        request = RequestFactory()
+        request.user = user  # type: ignore
+        viewset.request = request  # type: ignore
         queryset = viewset.get_queryset()
 
-        assert 1 == 1
+        assert viewset.queryset.count() == 1
+        assert viewset.queryset.first() == customer_1

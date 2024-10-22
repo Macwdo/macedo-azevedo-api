@@ -1,14 +1,13 @@
-from .lawyer import Lawyer
-from .lawsuit import Lawsuit
 from .customer import (
     Customer,
     CustomerAddress,
     CustomerDocument,
     CustomerDocumentFile,
-    CustomerReferred,
-    CustomerPhone,
     CustomerEmail,
-    CustomerReferredByCustomer,
-    CustomerReferredByLawyer,
+    CustomerPhone,
+    CustomerReferred,
     JuridicalPersonCustomer,
+    PhysicalPersonCustomer,
 )
+from .lawsuit import Lawsuit
+from .lawyer import Lawyer

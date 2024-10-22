@@ -1,9 +1,9 @@
-from rest_framework import mixins, permissions, viewsets
+from rest_framework import mixins, viewsets
 from rest_framework.permissions import IsAdminUser
 
 from api.permissions import UserWithLawFirmPermission
 from common.types import UserWithLawFirmRequest
-from lawfirm.models import LawFirm, OwnedByLawFirm, OwnedByLawFirmQuerySet
+from lawfirm.models import LawFirm
 
 
 class BaseGenericViewSet(viewsets.GenericViewSet):
