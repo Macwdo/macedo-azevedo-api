@@ -8,20 +8,20 @@ user_model = get_user_model()
 
 
 class Account(BaseModel):
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=255)
 
 
 class Company(BaseModel):
-    social_reason = models.CharField(max_length=100)
-    social_name = models.CharField(max_length=100)
-    cnpj = models.CharField(max_length=14)
+    social_reason = models.CharField(max_length=255)
+    social_name = models.CharField(max_length=255)
+    cnpj = models.CharField(max_length=20)
 
     account = models.ForeignKey(Account, on_delete=models.CASCADE)
     address = models.ForeignKey(Address, on_delete=models.CASCADE)
 
 
 class CompanyContacts(BaseModel):
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=255)
 
     email = models.ForeignKey(Email, on_delete=models.CASCADE)
     phone = models.ForeignKey(Phone, on_delete=models.CASCADE)
@@ -41,7 +41,7 @@ class CompanyContacts(BaseModel):
 
 
 class LawFirm(BaseModel):
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=255)
     image = models.ImageField()
     owner = models.OneToOneField(
         "LawFirmOwner",

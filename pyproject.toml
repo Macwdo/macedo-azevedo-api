@@ -11,6 +11,7 @@ dependencies = [
     "psycopg2-binary>=2.9.9",
     "djangorestframework>=3.15.2",
     "django-filter>=24.3",
+    "djangorestframework-simplejwt>=5.3.1",
 ]
 
 [tool.uv]
@@ -24,6 +25,7 @@ dev-dependencies = [
     "pytest>=8.3.3",
     "ruff>=0.6.9",
     "taskipy>=1.13.0",
+    "tblib>=3.0.0",
 ]
 
 [tool.taskipy.tasks]
@@ -32,7 +34,7 @@ lint_format = "ruff format & ruff check --fix"
 lint_unsafe = "ruff format & ruff check --unsafe-fixes --fix"
 
 pre_test = "coverage erase"
-test = "coverage run manage.py test --keepdb"
+test = "coverage run manage.py test"
 post_test = "coverage html"
 
 migrations = "python manage.py makemigrations"
@@ -76,6 +78,6 @@ skip-magic-trailing-comma = false
 
 line-ending = "auto"
 
-
 [tool.pyright]
 reportIncompatibleVariableOverride = false
+typeCheckingMode = "basic"

@@ -9,5 +9,9 @@ class UserWithLawFirm(User):
     current_lawfirm: LawFirm
 
 
+class AuthenticatedUserRequest(HttpRequest):
+    user: User
+
+
 class UserWithLawFirmRequest(HttpRequest):
     user: UserWithLawFirm | AnonymousUser

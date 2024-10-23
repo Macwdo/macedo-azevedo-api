@@ -43,6 +43,11 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
 ]
 
+THIRD_PART_APPS = [
+    "rest_framework",
+    "rest_framework_simplejwt",
+]
+
 APPLICATION_APPS = ["api", "authentication", "common", "lawfirm", "lawsuits"]
 
 INSTALLED_APPS += APPLICATION_APPS
@@ -81,29 +86,29 @@ WSGI_APPLICATION = "core.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
-# DATABASES = {
-#     "default": {
-#         "ENGINE": "django.db.backends.postgresql",
-#         "NAME": getenv("DB_NAME", "postgres"),
-#         "USER": getenv("DB_USER", "postgres"),
-#         "PASSWORD": getenv("DB_PASSWORD", "postgres"),
-#         "HOST": getenv("DB_HOST", "localhost"),
-#         "PORT": getenv("DB_PORT", 5432),
-#         "TEST": {
-#             "NAME": "test_db",
-#         },
-#     },
-# }
-
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": getenv("DB_NAME", "postgres"),
+        "USER": getenv("DB_USER", "postgres"),
+        "PASSWORD": getenv("DB_PASSWORD", "postgres"),
+        "HOST": getenv("DB_HOST", "localhost"),
+        "PORT": getenv("DB_PORT", 5432),
         "TEST": {
-            "NAME": "test_db.sqlite3",
+            "NAME": "test_db",
         },
-    }
+    },
 }
+
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "django.db.backends.sqlite3",
+#         "NAME": BASE_DIR / "db.sqlite3",
+#         "TEST": {
+#             "NAME": "test_db.sqlite3",
+#         },
+#     }
+# }
 
 
 # Password validation
@@ -148,3 +153,9 @@ STATIC_URL = "static/"
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+REST_FRAMEWORK = {
+    "DEFAULT_AUTHENTICATION_CLASSES": (
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
+    ),
+}

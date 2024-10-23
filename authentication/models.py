@@ -1,13 +1,16 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 
+from authentication.manager import CustomUserManager
 from common.models import BaseModel
-
-# Create your models here.
 
 
 class User(AbstractUser, BaseModel):
-    email = models.EmailField(unique=True, db_index=True)
+    username = None
+    email = models.EmailField(max_length=255, unique=True, db_index=True)
+    USERNAME_FIELD = "email"
+    REQUIRED_FIELDS = []
+
     current_lawfirm = models.OneToOneField(
         "lawfirm.LawFirm",
         on_delete=models.SET_NULL,
@@ -28,6 +31,8 @@ class User(AbstractUser, BaseModel):
         blank=True,
     )
 
+    objects = CustomUserManager()
+
     @property
-    def has_lawfirm(self):
+    def has_lawfirm(self) -> bool:
         return self.current_lawfirm is not None

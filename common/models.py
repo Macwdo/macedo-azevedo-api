@@ -63,13 +63,13 @@ class Address(BaseModel):
     street = models.CharField(max_length=255)
     city = models.CharField(max_length=255)
     state = models.CharField(max_length=255)
-    zip_code = models.CharField(max_length=10)
+    zip_code = models.CharField(max_length=20)
 
 
 class Phone(BaseModel):
     phone = models.CharField(max_length=20)
-    ddi = models.CharField(max_length=5)
-    ddd = models.CharField(max_length=5)
+    ddi = models.CharField(max_length=20)
+    ddd = models.CharField(max_length=20)
 
 
 class Email(BaseModel):

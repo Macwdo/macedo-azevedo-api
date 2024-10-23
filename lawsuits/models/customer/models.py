@@ -39,7 +39,7 @@ class CustomerReferred(OwnedByLawFirm):
         on_delete=models.CASCADE,
         related_name="referred",
     )
-    source = models.CharField(choices=Source, max_length=20)
+    source = models.CharField(choices=Source, max_length=50)
 
 
 class CustomerDocument(OwnedByLawFirm):
@@ -78,14 +78,14 @@ class CustomerAddress(OwnedByLawFirm):
 
 class PhysicalPersonCustomer(OwnedByLawFirm):
     # TODO: Test it
-    cpf = CpfField()
+    cpf = models.CharField(max_length=20)
     rg = models.CharField(max_length=20)
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
 
 
 class JuridicalPersonCustomer(OwnedByLawFirm):
     social_reason = models.CharField(max_length=255)
-    cnpj = models.CharField(max_length=14)
+    cnpj = models.CharField(max_length=25)
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
 
     name = models.CharField(max_length=255)

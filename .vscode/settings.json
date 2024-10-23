@@ -1,7 +1,5 @@
 {
-    "python.testing.unittestArgs": [
-        "--keepdb"
-    ],
+    "python.testing.unittestArgs": [],
     "python.testing.pytestEnabled": false,
     "python.testing.unittestEnabled": true,
     "python.experiments.optInto": [
@@ -12,5 +10,6 @@
         "source.organizeImports.ruff": "always",
         // "source.unusedImports": "always",
     },
-    "editor.formatOnSave": true
+    "editor.formatOnSave": true,
+    "debugpy.debugJustMyCode": false
 }

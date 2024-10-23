@@ -9,21 +9,21 @@ from lawsuits.models.customer.tests.factories import CustomerFactory
 
 class BaseOwnedByLawFirmGenericViewSetTests(TestCase):
     def test_user(self):
-        user: User = UserFactory.build(current_lawfirm__name="Lawfirm 1")
+        user: User = UserFactory.build(current_lawfirm__name="Lawfirm 1")  # type: ignore
 
         assert user.has_lawfirm
 
     def test_get_queryset_should_filter_by_user_current_lawfirm(self):
         """
-        This test should filter the queryset by the user's current lawfirmk
+        This test should filter the queryset by the user's current lawfirm
 
         """
 
-        user = UserFactory()
+        user = UserFactory(account__name="Account Name")
         viewset = OwnedByLawFirmGenericViewSet()
 
         customer_1 = CustomerFactory(lawfirm__name="Lawfirm 1")
-        customer_2 = CustomerFactory(lawfirm__name="Lawfirm 2")
+        CustomerFactory(lawfirm__name="Lawfirm 2")
 
         user.current_lawfirm = customer_1.lawfirm
         user.save()
@@ -36,5 +36,5 @@ class BaseOwnedByLawFirmGenericViewSetTests(TestCase):
         viewset.request = request  # type: ignore
         queryset = viewset.get_queryset()
 
-        self.assertEqual(queryset.count(), 1)
-        self.assertEqual(queryset[0], customer_1)
+        assert queryset.count(), 1
+        assert queryset[0], customer_1

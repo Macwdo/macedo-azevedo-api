@@ -40,5 +40,4 @@ class LawFirmFactory(factory.django.DjangoModelFactory):
         model = LawFirm
 
     name = factory.LazyAttribute(lambda _: _faker.company())
-    image = factory.django.ImageField(color="blue")
     owner = factory.SubFactory(LawFirmOwnerFactory)

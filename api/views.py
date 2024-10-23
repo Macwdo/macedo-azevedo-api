@@ -1,12 +1,18 @@
-from rest_framework import mixins, viewsets
+from rest_framework import mixins, views, viewsets
 from rest_framework.permissions import IsAdminUser
+from rest_framework_simplejwt.authentication import JWTAuthentication
 
 from api.permissions import UserWithLawFirmPermission
-from common.types import UserWithLawFirmRequest
+from api.types import UserWithLawFirmRequest
 from lawfirm.models import LawFirm
 
 
 class BaseGenericViewSet(viewsets.GenericViewSet):
+    pass
+
+
+class BaseApiView(views.APIView):
+    authentication_classes = [JWTAuthentication]
     pass
 
 
@@ -15,7 +21,6 @@ class OwnedByLawFirmGenericViewSet(BaseGenericViewSet):
     permission_classes = [UserWithLawFirmPermission, IsAdminUser]
 
     def get_queryset(self):
-        # TODO: Unit tests
         has_lawfirm_field = hasattr(self.queryset.model, "lawfirm")  # type: ignore
         assert has_lawfirm_field is True, "Model must have a 'lawfirm' field"
 
