@@ -8,7 +8,17 @@ user_model = get_user_model()
 
 
 class Account(BaseModel):
-    name = models.CharField(max_length=255)
+    phone = models.OneToOneField(
+        Phone,
+        on_delete=models.CASCADE,
+        related_name="account",
+        null=True,
+    )
+    user = models.OneToOneField(
+        user_model,
+        on_delete=models.CASCADE,
+        related_name="account",
+    )
 
 
 class Company(BaseModel):
