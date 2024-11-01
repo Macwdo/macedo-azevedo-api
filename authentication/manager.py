@@ -8,7 +8,10 @@ if TYPE_CHECKING:
 
 class CustomUserManager(BaseUserManager):
     def create_user(
-        self, email: str, password: str | None = None, **extra_fields: dict[str, str]
+        self,
+        email: str,
+        password: str | None = None,
+        **extra_fields: dict[str, str],
     ) -> "User":
         if not email:
             raise ValueError("The Email field must be set")

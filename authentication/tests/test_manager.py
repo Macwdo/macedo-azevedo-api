@@ -3,8 +3,7 @@ from django.test import TestCase
 
 from authentication.manager import CustomUserManager
 from authentication.models import User
-from authentication.tests.factories import UserFactory
-from lawfirm.tests.factories import AccountFactory
+from lawfirm.models import Account
 
 
 class UsersManagersTests(TestCase):
@@ -15,8 +14,8 @@ class UsersManagersTests(TestCase):
         user = self.user_manager.create_user(
             email="normal@user.com",
             password="foo",
-            account=AccountFactory(),
         )
+        account = Account.objects.create(owner=user)
         self.assertEqual(user.email, "normal@user.com")
         self.assertTrue(user.is_active)
         self.assertFalse(user.is_staff)
@@ -31,28 +30,25 @@ class UsersManagersTests(TestCase):
         with self.assertRaises(ValueError):
             self.user_manager.create_user(
                 email=None,
-                account=AccountFactory(),
             )
 
         with self.assertRaises(ValueError):
             self.user_manager.create_user(
                 email="",
-                account=AccountFactory(),
             )
 
         with self.assertRaises(ValueError):
             self.user_manager.create_user(
                 email="",
                 password="foo",
-                account=AccountFactory(),
             )
 
     def test_create_superuser(self):
         admin_user = self.user_manager.create_superuser(
             email="super@user.com",
             password="foo",
-            account=AccountFactory(),
         )
+        account = Account.objects.create(owner=admin_user)
 
         self.assertEqual(admin_user.email, "super@user.com")
         self.assertTrue(admin_user.is_active)
@@ -70,5 +66,4 @@ class UsersManagersTests(TestCase):
                 email="super@user.com",
                 password="foo",
                 is_superuser=False,
-                account=AccountFactory(),
             )

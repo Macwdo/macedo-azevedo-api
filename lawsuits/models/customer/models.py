@@ -11,8 +11,12 @@ class Customer(OwnedByLawFirm):
         NOT_INFORMED = ("not_informed", "Not informed")
 
     name = models.CharField(max_length=255)
-    gender = models.CharField(choices=Gender, max_length=20)
-    birth_date = models.DateField()
+    gender = models.CharField(
+        choices=Gender.choices,
+        max_length=20,
+        default=Gender.NOT_INFORMED,
+    )
+    birth_date = models.DateField(null=True, blank=True)
     reffered = models.OneToOneField(
         "CustomerReferred",
         on_delete=models.SET_NULL,

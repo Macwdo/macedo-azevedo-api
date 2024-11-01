@@ -3,7 +3,7 @@ from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APITestCase
 
-from authentication.tests.factories import UserFactory
+from authentication.models import User
 
 
 class MeApiViewTests(APITestCase):
@@ -11,7 +11,7 @@ class MeApiViewTests(APITestCase):
 
     def setUp(self) -> None:
         self.url = reverse("api:auth:me")
-        self.user = UserFactory.build(  # type: ignore
+        self.user = User(  # type: ignore
             first_name="John",
             last_name="Doe",
             email="johndoe@mail.com",

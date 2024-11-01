@@ -67,7 +67,7 @@ class Address(BaseModel):
 
 
 class Phone(BaseModel):
-    phone = models.CharField(max_length=20)
+    number = models.CharField(max_length=20)
     ddi = models.CharField(max_length=20)
     ddd = models.CharField(max_length=20)
 

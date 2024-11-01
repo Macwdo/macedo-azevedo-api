@@ -8,13 +8,10 @@ user_model = get_user_model()
 
 
 class Account(BaseModel):
-    phone = models.OneToOneField(
-        Phone,
-        on_delete=models.CASCADE,
-        related_name="account",
-        null=True,
-    )
-    user = models.OneToOneField(
+    phone_number = models.CharField(max_length=20)
+    phone_ddd = models.CharField(max_length=20)
+    phone_ddi = models.CharField(max_length=20)
+    owner = models.OneToOneField(
         user_model,
         on_delete=models.CASCADE,
         related_name="account",
@@ -114,5 +111,9 @@ class OwnedByLawFirm(BaseModel):
     class Meta:
         abstract = True
 
-    lawfirm = models.ForeignKey(LawFirm, on_delete=models.CASCADE)
+    lawfirm = models.ForeignKey(
+        LawFirm,
+        on_delete=models.CASCADE,
+        related_name="%(class)s_lawfirm",
+    )
     objects = OwnedByLawFirmManager.from_queryset(OwnedByLawFirmQuerySet)()

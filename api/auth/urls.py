@@ -5,7 +5,7 @@ from rest_framework_simplejwt.views import (
     TokenRefreshView,
 )
 
-from api.auth.views.me import MeApiView
+from api.auth.views import MeApiView, RegisterApiView
 
 app_name = "auth"
 
@@ -29,6 +29,11 @@ urlpatterns: list[URLResolver] = [
                         "me/",
                         MeApiView.as_view(),
                         name="me",
+                    ),
+                    path(
+                        "register/",
+                        RegisterApiView.as_view(),
+                        name="register",
                     ),
                 ],
                 "auth",

@@ -3,15 +3,13 @@ from rest_framework import status
 from rest_framework.test import APITestCase
 
 from authentication.models import User
-from authentication.tests.factories import UserFactory
-from lawfirm.tests.factories import AccountFactory
 
 
 class TokenObtainPairTests(APITestCase):
     maxDiff = None
 
     def setUp(self) -> None:
-        self.user = UserFactory(  # type: ignore
+        self.user = User(  # type: ignore
             first_name="John",
             last_name="Doe",
             email="johndoe@mail.com",
