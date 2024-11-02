@@ -13,7 +13,6 @@ class BaseGenericViewSet(viewsets.GenericViewSet):
 
 class BaseApiView(views.APIView):
     authentication_classes = [JWTAuthentication]
-    pass
 
 
 class OwnedByLawFirmGenericViewSet(BaseGenericViewSet):
