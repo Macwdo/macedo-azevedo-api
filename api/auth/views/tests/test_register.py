@@ -15,14 +15,52 @@ class RegisterAPIViewTests(APITestCase):
 
         assert response.status_code == status.HTTP_400_BAD_REQUEST
 
+    def test_create_user_with_invalid_password(self):
+        """
+        1. Create a password with less than 8 characters
+        2. Create numbers only password
+
+        """
+
+        url = reverse("api:auth:register")
+        data = {
+            "first_name": "John",
+            "last_name": "Doe",
+            "email": "johndoe@mail.com",
+            "password": "passwor",
+            "confirm_password": "passwor",
+            "phone": {
+                "number": "999999999",
+                "ddi": "55",
+                "ddd": "21",
+            },
+        }
+
+        response = self.client.post(url, data=data)
+        assert response.status_code == status.HTTP_400_BAD_REQUEST
+        self.assertDictEqual(
+            response.json(),
+            {
+                "password": [
+                    "This password is too short. It must contain at least 8 characters."
+                ]
+            },
+        )
+
+        data["password"] = "123456789"
+        data["confirm_password"] = "123456789"
+
+        response = self.client.post(url, data=data)
+        assert response.status_code == status.HTTP_400_BAD_REQUEST
+
     def test_create_user_with_valid_data(self):
         url = reverse("api:auth:register")
         data = {
             "first_name": "John",
             "last_name": "Doe",
             "email": "johndoe@mail.com",
-            "password": "password",
-            "confirm_password": "password",
+            "password": "password123",
+            "confirm_password": "password123",
             "phone": {
                 "number": "999999999",
                 "ddi": "55",
@@ -48,15 +86,6 @@ class RegisterAPIViewTests(APITestCase):
         self.assertDictEqual(
             response.json(),
             {
-                "first_name": "John",
-                "last_name": "Doe",
-                "email": "johndoe@mail.com",
-                "password": "password",
-                "confirm_password": "password",
-                "phone": {
-                    "number": "999999999",
-                    "ddi": "55",
-                    "ddd": "21",
-                },
+                "message": "User created",
             },
         )

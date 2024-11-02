@@ -1,3 +1,5 @@
+from uuid import uuid4
+
 from django.core.exceptions import ValidationError
 from django.db import models
 
@@ -35,10 +37,21 @@ class CpfField(models.CharField):
         return (11 - remainder) % 10
 
 
+def generate_code():
+    return uuid4().hex[:20]
+
+
 class BaseModel(models.Model):
     class Meta:
         abstract = True
 
+    code = models.CharField(
+        max_length=20,
+        unique=True,
+        db_index=True,
+        default=generate_code,
+        editable=False,
+    )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

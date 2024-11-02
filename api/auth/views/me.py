@@ -11,6 +11,7 @@ class MeApiView(BaseApiView):
     def get(self, request: AuthenticatedUserRequest) -> Response:
         return Response(
             {
+                "code": request.user.code,
                 "first_name": request.user.first_name,
                 "last_name": request.user.last_name,
                 "email": request.user.email,

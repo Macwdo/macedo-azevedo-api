@@ -45,6 +45,10 @@ migrate = "python manage.py migrate"
 test_migrations = "rm -rf **/migrations/00* && python manage.py makemigrations && python manage.py migrate"
 remove_migrations = "rm -rf **/migrations/00*"
 
+run = "uvicorn core.asgi:application --reload"
+run_dev = "python manage.py runserver"
+
+admin = "python manage.py createsuperuser --email admin@admin.com"
 
 [tool.ruff]
 exclude = [

@@ -20,8 +20,8 @@ class UserRegisterAndLoginTestCase(APITestCase):
             "first_name": "John",
             "last_name": "Doe",
             "email": "johndoe@mail.com",
-            "password": "password",
-            "confirm_password": "password",
+            "password": "password123",
+            "confirm_password": "password123",
             "phone": {
                 "number": "999999999",
                 "ddi": "55",
@@ -36,7 +36,7 @@ class UserRegisterAndLoginTestCase(APITestCase):
         token_url = reverse("api:auth:token")
         data = {
             "email": "johndoe@mail.com",
-            "password": "password",
+            "password": "password123",
         }
 
         response = self.client.post(token_url, data=data)

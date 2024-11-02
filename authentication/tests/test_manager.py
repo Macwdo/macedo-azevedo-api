@@ -13,7 +13,7 @@ class UsersManagersTests(TestCase):
     def test_create_user(self):
         user = self.user_manager.create_user(
             email="normal@user.com",
-            password="foo",
+            password="password",
         )
         account = Account.objects.create(owner=user)
         self.assertEqual(user.email, "normal@user.com")
@@ -30,23 +30,25 @@ class UsersManagersTests(TestCase):
         with self.assertRaises(ValueError):
             self.user_manager.create_user(
                 email=None,
+                password="password",
             )
 
         with self.assertRaises(ValueError):
             self.user_manager.create_user(
                 email="",
+                password="password",
             )
 
         with self.assertRaises(ValueError):
             self.user_manager.create_user(
                 email="",
-                password="foo",
+                password="password",
             )
 
     def test_create_superuser(self):
         admin_user = self.user_manager.create_superuser(
             email="super@user.com",
-            password="foo",
+            password="password",
         )
         account = Account.objects.create(owner=admin_user)
 
@@ -64,6 +66,6 @@ class UsersManagersTests(TestCase):
         with self.assertRaises(IntegrityError):
             self.user_manager.create_user(
                 email="super@user.com",
-                password="foo",
+                password="password",
                 is_superuser=False,
             )

@@ -1,3 +1,4 @@
+from django.contrib.auth.password_validation import validate_password
 from rest_framework import serializers, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -18,6 +19,20 @@ class RegisterApiView(APIView):
         password = serializers.CharField()
         confirm_password = serializers.CharField()
         phone = PhoneSerializer()
+
+        def validate_password(self, password):
+            try:
+                validate_password(password)
+            except serializers.ValidationError as e:
+                raise serializers.ValidationError(e.args[0])
+
+            return password
+
+        def validate(self, data):
+            if data["password"] != data["confirm_password"]:
+                raise serializers.ValidationError("Passwords do not match")
+
+            return data
 
     def post(self, request):
         if request.user.is_authenticated:
@@ -41,4 +56,7 @@ class RegisterApiView(APIView):
             phone_number=validated_data["phone"]["number"],
         )
 
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(
+            {"message": "User created"},
+            status=status.HTTP_201_CREATED,
+        )

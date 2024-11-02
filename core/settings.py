@@ -28,9 +28,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = "django-insecure-e=#vuy+xd6g3^&$4p4t=c+b2u87#d2t=tpg9l*n*$u9t67)v!$"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = getenv("DEBUG", "0") == "1"
+DEBUG = getenv("DEBUG", "1") == "1"
 
-ALLOWED_HOSTS = getenv("ALLOWED_HOSTS", "localhost").split(",")
+if DEBUG:
+    ALLOWED_HOSTS = ["*"]
+
+else:
+    ALLOWED_HOSTS = getenv("ALLOWED_HOSTS", "").split(",")
 
 
 # Application definition
@@ -48,9 +52,16 @@ THIRD_PART_APPS = [
     "rest_framework_simplejwt",
 ]
 
-APPLICATION_APPS = ["api", "authentication", "common", "lawfirm", "lawsuits"]
+APPLICATION_APPS = [
+    "api",
+    "authentication",
+    "common",
+    "lawfirm",
+    "lawsuits",
+]
 
 INSTALLED_APPS += APPLICATION_APPS
+INSTALLED_APPS += THIRD_PART_APPS
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -116,13 +127,7 @@ DATABASES = {
 
 AUTH_PASSWORD_VALIDATORS = [
     {
-        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
-    },
-    {
         "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
-    },
-    {
-        "NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",
     },
     {
         "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
@@ -135,7 +140,11 @@ AUTH_USER_MODEL = "authentication.User"
 # Internationalization
 # https://docs.djangoproject.com/en/5.1/topics/i18n/
 
-LANGUAGE_CODE = "pt-br"
+if DEBUG:
+    LANGUAGE_CODE = "en-us"
+
+else:
+    LANGUAGE_CODE = "pt-br"
 
 TIME_ZONE = "America/Sao_Paulo"
 

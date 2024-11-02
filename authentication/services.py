@@ -1,5 +1,8 @@
+from django.contrib.auth.password_validation import validate_password
+from django.core.exceptions import ValidationError
 from django.db import transaction
 
+from api.exceptions import InternalException
 from authentication.models import User
 from common.services import create_phone
 from lawfirm.services import create_account
