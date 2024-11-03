@@ -24,7 +24,7 @@ class Account(BaseModel):
     owner = models.OneToOneField(
         user_model,
         on_delete=models.CASCADE,
-        related_name="account",
+        related_name="user_account",
     )
 
 

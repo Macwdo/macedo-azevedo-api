@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from typing import TYPE_CHECKING
 
 from django.contrib.auth.models import AbstractUser
@@ -25,10 +27,12 @@ class User(AbstractUser, BaseModel):
     deleted_at = models.DateTimeField(auto_now_add=True)
 
     objects = CustomUserManager()  # type: ignore
-    account: "Account | None"
-
     # TODO: Add clean validation with account and creation
 
     @property
     def has_lawfirm(self) -> bool:
         return self.current_lawfirm is not None
+
+    @property
+    def account(self) -> Account | None:
+        return getattr(self, "user_account", None)
