@@ -1,4 +1,4 @@
-from .customer import (
+from .customer import (  # noqa
     Customer,
     CustomerAddress,
     CustomerDocument,
@@ -9,5 +9,5 @@ from .customer import (
     JuridicalPersonCustomer,
     PhysicalPersonCustomer,
 )
-from .lawsuit import Lawsuit
-from .lawyer import Lawyer
+from .lawsuit import Lawsuit  # noqa
+from .lawyer import Lawyer  # noqa

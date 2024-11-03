@@ -1,16 +1,26 @@
 from django.core.exceptions import ValidationError
 from django.db import models
 
-from common.models import Address, BaseModel, Email, Phone
+from common.models import Address, BaseModel, Email, File, Phone
 from utils.user import get_user_model
 
 user_model = get_user_model()
+
+
+def image_upload_path(instance, filename) -> str:
+    return f"{instance.code}/{instance.code}_{filename}"
 
 
 class Account(BaseModel):
     phone_number = models.CharField(max_length=20)
     phone_ddd = models.CharField(max_length=20)
     phone_ddi = models.CharField(max_length=20)
+    image = models.ForeignKey(
+        File,
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+    )
     owner = models.OneToOneField(
         user_model,
         on_delete=models.CASCADE,
@@ -42,7 +52,8 @@ class CompanyContacts(BaseModel):
 
         has_main_contact = self.objects.filter(company=self.company, main=True).exists()
         if has_main_contact:
-            raise ValidationError("Main contact already exists")
+            msg = "Main contact already exists"
+            raise ValidationError(msg)
 
         return super().clean()
 
@@ -82,7 +93,8 @@ class LawFirmOwner(BaseModel):
         has_physical_person_owner = self.physical_person_owner is not None
 
         if not (has_juridical_person_owner or has_physical_person_owner):
-            raise ValidationError("LawFirmOwner was created without an owner")
+            msg = "LawFirmOwner was created without an owner"
+            raise ValidationError(msg)
 
         if has_juridical_person_owner:
             return self.LawFirmOwnerType.COMPANY
@@ -94,7 +106,8 @@ class LawFirmOwner(BaseModel):
         has_physical_person_owner = self.physical_person_owner is not None
 
         if not (has_physical_person_owner and has_juridical_person_owner):
-            raise ValidationError("You need to set an owner to create a LawFirmOwner.")
+            msg = "You need to set an owner to create a LawFirmOwner."
+            raise ValidationError(msg)
 
         return super().clean()
 

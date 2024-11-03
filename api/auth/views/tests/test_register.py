@@ -9,19 +9,17 @@ from lawfirm.models import Account
 class RegisterAPIViewTests(APITestCase):
     maxDiff = None
 
-    def test_create_user_with_invalid_data(self):
+    def test_create_user_with_invalid_data(self) -> None:
         url = reverse("api:auth:register")
         response = self.client.post(url)
 
         assert response.status_code == status.HTTP_400_BAD_REQUEST
 
-    def test_create_user_with_invalid_password(self):
-        """
-        1. Create a password with less than 8 characters
-        2. Create numbers only password
+    def test_create_user_with_invalid_password(self) -> None:
+        """1. Create a password with less than 8 characters
+        2. Create numbers only password.
 
         """
-
         url = reverse("api:auth:register")
         data = {
             "first_name": "John",
@@ -42,8 +40,8 @@ class RegisterAPIViewTests(APITestCase):
             response.json(),
             {
                 "password": [
-                    "This password is too short. It must contain at least 8 characters."
-                ]
+                    "This password is too short. It must contain at least 8 characters.",
+                ],
             },
         )
 
@@ -53,7 +51,7 @@ class RegisterAPIViewTests(APITestCase):
         response = self.client.post(url, data=data)
         assert response.status_code == status.HTTP_400_BAD_REQUEST
 
-    def test_create_user_with_valid_data(self):
+    def test_create_user_with_valid_data(self) -> None:
         url = reverse("api:auth:register")
         data = {
             "first_name": "John",

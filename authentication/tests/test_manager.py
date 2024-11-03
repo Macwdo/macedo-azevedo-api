@@ -1,69 +1,72 @@
+import contextlib
+from typing import TYPE_CHECKING
+
+import pytest
 from django.db import IntegrityError
 from django.test import TestCase
 
-from authentication.manager import CustomUserManager
 from authentication.models import User
 from lawfirm.models import Account
 
+if TYPE_CHECKING:
+    from authentication.manager import CustomUserManager
+
 
 class UsersManagersTests(TestCase):
-    def setUp(self):
+    def setUp(self) -> None:
         self.user_manager: CustomUserManager = User.objects  # type: ignore
 
-    def test_create_user(self):
+    def test_create_user(self) -> None:
         user = self.user_manager.create_user(
             email="normal@user.com",
             password="password",
         )
-        account = Account.objects.create(owner=user)
-        self.assertEqual(user.email, "normal@user.com")
-        self.assertTrue(user.is_active)
-        self.assertFalse(user.is_staff)
-        self.assertFalse(user.is_superuser)
+        Account.objects.create(owner=user)
+        assert user.email == "normal@user.com"
+        assert user.is_active
+        assert not user.is_staff
+        assert not user.is_superuser
         try:
             # username is None for the AbstractUser option
             # username does not exist for the AbstractBaseUser option
-            self.assertIsNone(user.username)
+            assert user.username is None
         except AttributeError:
             pass
 
-        with self.assertRaises(ValueError):
+        with pytest.raises(ValueError):
             self.user_manager.create_user(
                 email=None,
                 password="password",
             )
 
-        with self.assertRaises(ValueError):
+        with pytest.raises(ValueError):
             self.user_manager.create_user(
                 email="",
                 password="password",
             )
 
-        with self.assertRaises(ValueError):
+        with pytest.raises(ValueError):
             self.user_manager.create_user(
                 email="",
                 password="password",
             )
 
-    def test_create_superuser(self):
+    def test_create_superuser(self) -> None:
         admin_user = self.user_manager.create_superuser(
             email="super@user.com",
             password="password",
         )
-        account = Account.objects.create(owner=admin_user)
+        Account.objects.create(owner=admin_user)
 
-        self.assertEqual(admin_user.email, "super@user.com")
-        self.assertTrue(admin_user.is_active)
-        self.assertTrue(admin_user.is_staff)
-        self.assertTrue(admin_user.is_superuser)
+        assert admin_user.email == "super@user.com"
+        assert admin_user.is_active
+        assert admin_user.is_staff
+        assert admin_user.is_superuser
 
-        try:
+        with contextlib.suppress(AttributeError):
             assert admin_user.username is None
 
-        except AttributeError:
-            pass
-
-        with self.assertRaises(IntegrityError):
+        with pytest.raises(IntegrityError):
             self.user_manager.create_user(
                 email="super@user.com",
                 password="password",

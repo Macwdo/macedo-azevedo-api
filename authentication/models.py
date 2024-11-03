@@ -1,8 +1,13 @@
+from typing import TYPE_CHECKING
+
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 
 from authentication.manager import CustomUserManager
 from common.models import BaseModel
+
+if TYPE_CHECKING:
+    from lawfirm.models import Account
 
 
 class User(AbstractUser, BaseModel):
@@ -19,7 +24,10 @@ class User(AbstractUser, BaseModel):
     )
     deleted_at = models.DateTimeField(auto_now_add=True)
 
-    objects = CustomUserManager()
+    objects = CustomUserManager()  # type: ignore
+    account: "Account | None"
+
+    # TODO: Add clean validation with account and creation
 
     @property
     def has_lawfirm(self) -> bool:

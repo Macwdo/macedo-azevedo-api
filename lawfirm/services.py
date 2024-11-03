@@ -1,5 +1,5 @@
 from authentication.models import User
-from common.models import Phone
+from common.models import File
 from lawfirm.models import Account
 
 
@@ -20,3 +20,26 @@ def create_account(
     account.save()
 
     return account
+
+
+def upload_account_image(
+    *,
+    account: Account,
+    image,
+) -> File:
+    file = File(
+        file=image,
+        source=File.Source.ACCOUNT_IMAGE,
+    )
+    file.full_clean()
+    file.save()
+
+    if account.image:
+        account.image.delete()
+
+    account.image = file
+    account.full_clean()
+
+    account.save()
+
+    return account.image

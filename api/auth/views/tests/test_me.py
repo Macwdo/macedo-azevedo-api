@@ -1,4 +1,3 @@
-from django.test import tag
 from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APITestCase
@@ -17,11 +16,11 @@ class MeApiViewTests(APITestCase):
             email="johndoe@mail.com",
         )
 
-    def test_get_me_unauthenticated_should_return_401(self):
+    def test_get_me_unauthenticated_should_return_401(self) -> None:
         response = self.client.get(self.url)
         assert response.status_code, status.HTTP_401_UNAUTHORIZED
 
-    def test_get_should_return_me_values(self):
+    def test_get_should_return_me_values(self) -> None:
         self.client.force_authenticate(user=self.user)  # type: ignore
 
         response = self.client.get(self.url)

@@ -2,9 +2,6 @@ from typing import TYPE_CHECKING
 
 from django.contrib.auth.models import BaseUserManager
 from django.contrib.auth.password_validation import validate_password
-from django.core.exceptions import ValidationError
-
-from api.exceptions import InternalException
 
 if TYPE_CHECKING:
     from .models import User
@@ -18,7 +15,8 @@ class CustomUserManager(BaseUserManager):
         **extra_fields: dict[str, str],
     ) -> "User":
         if not email:
-            raise ValueError("The Email field must be set")
+            msg = "The Email field must be set"
+            raise ValueError(msg)
 
         email = self.normalize_email(email)
         user = self.model(email=email, **extra_fields)
@@ -28,7 +26,10 @@ class CustomUserManager(BaseUserManager):
         return user
 
     def create_superuser(
-        self, email: str, password: str | None = None, **extra_fields
+        self,
+        email: str,
+        password: str | None = None,
+        **extra_fields,
     ) -> "User":
         extra_fields.setdefault("is_staff", True)
         extra_fields.setdefault("is_superuser", True)

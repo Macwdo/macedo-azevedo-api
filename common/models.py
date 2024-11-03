@@ -5,18 +5,19 @@ from django.db import models
 
 
 class CpfField(models.CharField):
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args, **kwargs) -> None:
         kwargs["max_length"] = 11
         super().__init__(*args, **kwargs)
 
-    def validate(self, value, model_instance):
+    def validate(self, value, model_instance) -> None:
         super().validate(value, model_instance)
         self.validate_cpf(value)
 
-    def validate_cpf(self, value):
+    def validate_cpf(self, value) -> None:
         cpf = self.clean_cpf(value)
         if not self.is_valid_cpf(cpf):
-            raise ValidationError("Invalid CPF")
+            msg = "Invalid CPF"
+            raise ValidationError(msg)
 
     def clean_cpf(self, value):
         return "".join(filter(str.isdigit, value))
@@ -62,14 +63,28 @@ class DocumentType(BaseModel):
     @staticmethod
     def get_default() -> "DocumentType":
         default_document_type, _ = DocumentType.objects.get_or_create(
-            name="Not defined"
+            name="Not defined",
         )
         return default_document_type
 
 
-class Files(BaseModel):
-    file = models.FileField()
-    description = models.CharField(max_length=255)
+def upload_path(instance, filename) -> str:
+    code = instance.code
+    now = instance.created_at.strftime("%Y_%m_%d__%H_%M_%S")
+    return f"{code}_{now}_{filename}"
+
+
+class File(BaseModel):
+    class Source(models.TextChoices):
+        NOT_DEFINED = "NOT_DEFINED", "Not Defined"
+        ACCOUNT_IMAGE = "ACCOUNT_IMAGE", "Account Image"
+
+    file = models.FileField(upload_to=upload_path)
+    source = models.CharField(
+        max_length=20,
+        choices=Source.choices,
+        default=Source.NOT_DEFINED,
+    )
 
 
 class Address(BaseModel):

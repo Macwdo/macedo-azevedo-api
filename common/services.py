@@ -1,6 +1,4 @@
-from authentication.models import User
 from common.models import Phone
-from lawfirm.models import Account
 
 
 def create_phone(*, number: str, ddi: str, ddd: str) -> Phone:

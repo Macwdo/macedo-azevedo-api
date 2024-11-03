@@ -1,6 +1,6 @@
 from django.db import models
 
-from common.models import Address, CpfField, DocumentType, Files, Phone
+from common.models import Address, DocumentType, File, Phone
 from lawfirm.models import OwnedByLawFirm
 
 
@@ -59,7 +59,7 @@ class CustomerDocument(OwnedByLawFirm):
 
 class CustomerDocumentFile(OwnedByLawFirm):
     customer_document = models.ForeignKey(CustomerDocument, on_delete=models.CASCADE)
-    file = models.ForeignKey(Files, on_delete=models.CASCADE)
+    file = models.ForeignKey(File, on_delete=models.CASCADE)
 
 
 class CustomerEmail(OwnedByLawFirm):
@@ -81,7 +81,7 @@ class CustomerAddress(OwnedByLawFirm):
 
 
 class PhysicalPersonCustomer(OwnedByLawFirm):
-    # TODO: Test it
+    # TODO (<MACWDO>): Test it
     cpf = models.CharField(max_length=20)
     rg = models.CharField(max_length=20)
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE)

@@ -18,7 +18,7 @@ class TokenObtainPairTests(APITestCase):
         self.user.set_password(self.password)
         self.user.save()
 
-    def test_post_should_return_jwt_token(self):
+    def test_post_should_return_jwt_token(self) -> None:
         url = reverse("api:auth:token")
         data = {"email": self.user.email, "password": self.password}
 

@@ -30,7 +30,8 @@ class RegisterApiView(APIView):
 
         def validate(self, data):
             if data["password"] != data["confirm_password"]:
-                raise serializers.ValidationError("Passwords do not match")
+                msg = "Passwords do not match"
+                raise serializers.ValidationError(msg)
 
             return data
 

@@ -10,10 +10,9 @@ class UserRegisterAndLoginTestCase(APITestCase):
         """
         1. Create a user
         2. Login the user
-        3. Me endpoint should return the user details
+        3. Me endpoint should return the user details.
 
         """
-
         # Create a user
         register_url = reverse("api:auth:register")
         data = {

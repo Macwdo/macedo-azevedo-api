@@ -7,8 +7,6 @@ from rest_framework_simplejwt.views import (
 
 from api.auth.views import MeApiView, RegisterApiView
 
-app_name = "auth"
-
 urlpatterns: list[URLResolver] = [
     path(
         "auth/",
@@ -37,7 +35,7 @@ urlpatterns: list[URLResolver] = [
                     ),
                 ],
                 "auth",
-            )
+            ),
         ),
     ),
 ]

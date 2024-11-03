@@ -13,6 +13,9 @@ dependencies = [
     "djangorestframework-simplejwt>=5.3.1",
     "pydantic>=2.9.2",
     "psycopg2-binary>=2.9.10",
+    "django-cleanup>=9.0.0",
+    "django-storages>=1.14.4",
+    "boto3>=1.35.54",
 ]
 
 [tool.uv]
@@ -20,68 +23,67 @@ dev-dependencies = [
     "coverage>=7.6.2",
     "factory-boy>=3.3.1",
     "image>=1.5.33",
+    "ipdb>=0.13.13",
     "pillow>=10.4.0",
     "pyright>=1.1.384",
     "pytest-django>=4.9.0",
     "pytest>=8.3.3",
     "ruff>=0.6.9",
-    "taskipy>=1.13.0",
     "tblib>=3.0.0",
 ]
 
-[tool.taskipy.tasks]
-lint_check = "ruff check"
-lint_format = "ruff format & ruff check --fix"
-lint_unsafe = "ruff format & ruff check --unsafe-fixes --fix"
-
-pre_test = "coverage erase"
-test = "coverage run manage.py test --exclude-tag=skip"
-post_test = "coverage html"
-
-migrations = "python manage.py makemigrations"
-merge_migrations = "python manage.py merge_migrations"
-migrate = "python manage.py migrate"
-
-test_migrations = "rm -rf **/migrations/00* && python manage.py makemigrations && python manage.py migrate"
-remove_migrations = "rm -rf **/migrations/00*"
-
-run = "uvicorn core.asgi:application --reload"
-run_dev = "python manage.py runserver"
-
-admin = "python manage.py createsuperuser --email admin@admin.com"
-
 [tool.ruff]
+# Exclude a variety of commonly ignored directories.
 exclude = [
+    ".bzr",
+    ".direnv",
+    ".eggs",
     ".git",
-    ".gitignore",
-    ".vscode",
-    ".venv",
-    ".pytest_cache",
-    ".ruff_cache",
+    ".git-rewrite",
+    ".hg",
+    ".ipynb_checkpoints",
     ".mypy_cache",
-    "__pycache__",
+    ".nox",
+    ".pants.d",
+    ".pyenv",
+    ".pytest_cache",
+    ".pytype",
+    ".ruff_cache",
+    ".svn",
+    ".tox",
+    ".venv",
+    ".vscode",
+    "__pypackages__",
+    "_build",
+    "buck-out",
+    "build",
+    "dist",
+    "node_modules",
+    "site-packages",
+    "venv",
 ]
 
 line-length = 88
 indent-width = 4
 
+target-version = "py313"
+
 [tool.ruff.lint]
-select = []
-ignore = []
+select = ["E4", "E7", "E9", "F"]
+ignore = ["F403"]
 
 fixable = ["ALL"]
 unfixable = []
-
 dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
 
 [tool.ruff.format]
 quote-style = "double"
-
 indent-style = "space"
-
 skip-magic-trailing-comma = false
-
 line-ending = "auto"
+docstring-code-format = true
+docstring-code-line-length = "dynamic"
+
 
 [tool.pyright]
 reportIncompatibleVariableOverride = false
