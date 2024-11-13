@@ -77,9 +77,14 @@ remove_migrations:
 	-@ rm -rf **/migrations/00*
 
 # Admin
+
+createadmin:
+	@echo "Creating admin user 🦸"
+	-@ python manage.py createsuperuser --email admin@admin.com
+
 createsuperuser:
 	@echo "Creating super user 🦸"
-	-@ python manage.py createsuperuser --email admin@admin.com
+	-@ python manage.py createsuperuser
 # Static files
 collectstatic:
 	@echo "Collecting static files 📦"

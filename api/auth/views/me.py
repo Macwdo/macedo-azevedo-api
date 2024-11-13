@@ -17,6 +17,7 @@ class MeApiView(BaseApiView):
         return Response(
             {
                 "code": request.user.code,
+                "full_name": request.user.get_full_name(),
                 "first_name": request.user.first_name,
                 "last_name": request.user.last_name,
                 "email": request.user.email,

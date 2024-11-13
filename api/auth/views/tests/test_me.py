@@ -18,17 +18,20 @@ class MeApiViewTests(APITestCase):
 
     def test_get_me_unauthenticated_should_return_401(self) -> None:
         response = self.client.get(self.url)
-        assert response.status_code, status.HTTP_401_UNAUTHORIZED
+        assert response.status_code == status.HTTP_401_UNAUTHORIZED
 
     def test_get_should_return_me_values(self) -> None:
         self.client.force_authenticate(user=self.user)  # type: ignore
 
         response = self.client.get(self.url)
         expected = {
+            "code": self.user.code,
             "first_name": "John",
             "last_name": "Doe",
             "email": "johndoe@mail.com",
+            "full_name": "John Doe",
+            "image": None,
         }
 
-        assert response.status_code, status.HTTP_200_OK
-        assert response.json(), expected
+        assert response.status_code == status.HTTP_200_OK
+        self.assertDictEqual(response.json(), expected)

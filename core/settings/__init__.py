@@ -15,4 +15,3 @@ from .enviroment import *
 from .files import *
 from .i18n import *
 from .middlewares import *
-from .rest_framework import *
