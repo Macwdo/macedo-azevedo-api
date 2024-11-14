@@ -85,10 +85,13 @@ createadmin:
 createsuperuser:
 	@echo "Creating super user 🦸"
 	-@ python manage.py createsuperuser
+
 # Static files
 collectstatic:
 	@echo "Collecting static files 📦"
+	-@ mkdir -p static
 	-@ python manage.py collectstatic
+
 
 # Infra 
 build:
@@ -109,10 +112,12 @@ clean:
 	-@ docker compose down
 	-@ sudo rm -rf ./.data
 
+
 # Run
-dev:
+run:
 	@echo "Running the project in development mode 🚀"
 	-@ python manage.py runserver
+
 
 # Setup
 setup_dev:
