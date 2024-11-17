@@ -1,22 +1,24 @@
-<!-- {% extends "base.html" %}  -->
+{% extends "base.html" %}
 {% load static %}
 
-{% block title %}Home{% endblock %} 
-{% block content_title %}Home{% endblock %}
+{% block title %} Home {% endblock title %}
+
+{% block content_title %}Home{% endblock content_title %}
+
 
 {% block content_breadcrumbs %}
-  <ol class="breadcrumb float-sm-end">
-    <li class="breadcrumb-item"><a href="#">Home</a></li>
-    <li class="breadcrumb-item active" aria-current="page">
-      Home 
-    </li>
+<ol class="breadcrumb float-sm-end">
+  <li class="breadcrumb-item"><a href="#">Home</a></li>
+  <li class="breadcrumb-item active" aria-current="page">
+    Detail
+  </li>
 
-  </ol>
+</ol>
 </div>
-{% endblock %}
+{% endblock content_breadcrumbs %}
 
 {% block main_content %}
 <h1>
-    Home
+  Home
 </h1>
-{% endblock %}
+{% endblock main_content %}
