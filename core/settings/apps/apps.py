@@ -16,6 +16,7 @@ THIRD_PART_APPS = [
 
 APPLICATION_APPS = [
     "api",
+    "app",
     "authentication",
     "common",
     "lawfirm",

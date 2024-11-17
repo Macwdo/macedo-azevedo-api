@@ -1,0 +1,29 @@
+{% load static %}
+<aside class="app-sidebar border bg-color-primary" data-bs-theme="dark" >
+    <div class="sidebar-brand">
+        <span class="brand-text fw-light">AdminLTE 4</span>
+      </a>
+    </div>
+    <div class="sidebar-wrapper">
+      <nav class="mt-2">
+        <ul
+          class="nav sidebar-menu flex-column"
+        >
+          <li class="nav-item">
+            {% if request.path == '/' %}
+            <a href="#" class="nav-link active">
+            {% else %}
+            <a href="#" class="nav-link">
+            {% endif %}
+              <i class="nav-icon bi bi-speedometer"></i>
+              <p>
+                Home
+              </p>
+            </a>
+          </li>
+
+        </ul>
+      </nav>
+    </div>
+  </aside>
+  

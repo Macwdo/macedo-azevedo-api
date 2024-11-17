@@ -1,11 +1,18 @@
+
+from . import BASE_DIR
+
 ROOT_URLCONF = "core.urls"
 WSGI_APPLICATION = "core.wsgi.application"
+
+LOGIN_URL = "/auth/login/"
 
 
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS": [
+            BASE_DIR / "global/",
+        ],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [

@@ -89,7 +89,6 @@ createsuperuser:
 # Static files
 collectstatic:
 	@echo "Collecting static files 📦"
-	-@ mkdir -p static
 	-@ python manage.py collectstatic
 
 
