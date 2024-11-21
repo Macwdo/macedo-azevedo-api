@@ -1,6 +1,10 @@
+.data/
+static
+
 # Cache files #
 **_cache**/
-.data/
+
+
 # Django #
 *.log
 *.pot

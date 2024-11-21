@@ -1,4 +1,5 @@
 # Lint
+
 check:
 	@echo "Running lint check 🧹"
 	-@ ruff check
@@ -12,7 +13,7 @@ lint_unsafe:
 	-@ ruff format & ruff check --unsafe-fixes --fix
 
 # Test
-# TODO: Run tests inside a docker container
+
 test_prod:
 	@echo "Cleaning up coverage files 🧹"
 	-@ coverage erase
@@ -64,6 +65,7 @@ test_dev_parallel:
 
 
 # Database
+
 migrate:
 	@echo "Running migrations 🚚"
 	-@ python manage.py migrate
@@ -82,15 +84,16 @@ createadmin:
 	@echo "Creating admin user 🦸"
 	-@ python manage.py createsuperuser --email admin@admin.com
 
+
 createsuperuser:
 	@echo "Creating super user 🦸"
 	-@ python manage.py createsuperuser
 
+
 # Static files
 collectstatic:
 	@echo "Collecting static files 📦"
-	-@ python manage.py collectstatic
-
+	-@ python manage.py collectstatic --noinput
 
 # Infra 
 build:
@@ -98,9 +101,9 @@ build:
 	-@ docker build -t macedo-azevedo-api .
 
 up:
-	@echo "Starting... 🚀"
+	@echo "Setting up Application Infrastructure... 🚀"
 	-@ docker compose down
-	-@ docker compose up -d
+	-@ docker compose -f docker-compose-dev.yml up -d
 
 down:
 	@echo "Stopping the project 🛑"
@@ -110,7 +113,6 @@ clean:
 	@echo "Cleaning up the project 🧹"
 	-@ docker compose down
 	-@ sudo rm -rf ./.data
-
 
 # Run
 run:
@@ -124,4 +126,4 @@ setup_dev:
 	-@ uv sync
 
 	@echo "Copying the .env file 🚀"
-	-@ cp .envsample .env
+	-@ cp dotenv_files/.env.sample .env
