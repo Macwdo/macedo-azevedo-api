@@ -1,7 +1,12 @@
 FROM python:3.12.0-slim
 
 COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
-COPY . /app
+COPY ./src /app/
+COPY ./pyproject.toml /app
+COPY ./uv.lock /app
+COPY ./gunicorn.conf.py /app
+
+COPY ./infra/scripts /app/scripts
 
 WORKDIR /app
 RUN uv sync --frozen --no-cache

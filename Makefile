@@ -1,5 +1,4 @@
 # Lint
-
 check:
 	@echo "Running lint check 🧹"
 	-@ ruff check
@@ -12,14 +11,14 @@ lint_unsafe:
 	@echo "Running lint unsafe format 🧹"
 	-@ ruff format & ruff check --unsafe-fixes --fix
 
-# Test
 
+# Test
 test_prod:
 	@echo "Cleaning up coverage files 🧹"
 	-@ coverage erase
 
 	@echo "Running tests 🧪..."
-	-@ coverage run manage.py test --exclude-tag=WIP
+	--@ cd src && coverage run manage.py test --exclude-tag=WIP
 	
 	@echo "\n\n"
 	@echo "Test results 📊..."
@@ -31,7 +30,7 @@ test_prod_parallel:
 	-@ coverage erase
 
 	@echo "Running tests 🧪..."
-	-@ coverage run manage.py test --exclude-tag=WIP --parallel
+	-@ cd src && coverage run manage.py test --exclude-tag=WIP --parallel
 
 	@echo "\n\n"
 	@echo "Test results 📊..."
@@ -43,7 +42,7 @@ test_dev:
 	-@ coverage erase
 
 	@echo "Running tests 🧪..."
-	-@ coverage run manage.py test
+	-@ cd src && coverage run manage.py test
 
 	@echo "\n\n"
 	@echo "Test results 📊..."
@@ -55,70 +54,89 @@ test_dev_parallel:
 	-@ coverage erase
 
 	@echo "Running tests 🧪..."
-	-@ coverage run manage.py test --parallel
+	-@ cd src && coverage run manage.py test --parallel
 
 	@echo "\n\n"
 	@echo "Test results 📊..."
 
 	-@ coverage html
 
-
-
 # Database
-
 migrate:
 	@echo "Running migrations 🚚"
-	-@ python manage.py migrate
+	-@ python src/manage.py migrate
 
 migrations:
 	@echo "Creating migrations 🚚"
-	-@ python manage.py makemigrations
+	-@ python src/manage.py makemigrations
 
 remove_migrations:
 	@echo "Removing migrations 🚚"
 	-@ rm -rf **/migrations/00*
 
 # Admin
-
 createadmin:
 	@echo "Creating admin user 🦸"
-	-@ python manage.py createsuperuser --email admin@admin.com
-
+	-@ python src/manage.py createsuperuser --email admin@admin.com
 
 createsuperuser:
 	@echo "Creating super user 🦸"
-	-@ python manage.py createsuperuser
-
+	-@ python src/manage.py createsuperuser
 
 # Static files
 collectstatic:
 	@echo "Collecting static files 📦"
-	-@ python manage.py collectstatic --noinput
+	-@ python src/manage.py collectstatic --noinput
 
 # Infra 
+up_prod:
+	@echo "Running the project in production mode 🚀"
+	-@ docker compose -f infra/docker-compose-prod.yml down
+	-@ docker compose -f infra/docker-compose-prod.yml up -d
+
+run_prod:
+	@echo "Running the project in production mode 🚀"
+	-@ docker compose -f infra/docker-compose-prod.yml down
+	-@ docker compose -f infra/docker-compose-prod.yml up
+
+down_prod:
+	@echo "Stopping the project in production mode 🛑"
+	-@ docker compose -f infra/docker-compose-prod.yml down
+
+up_dev:
+	@echo "Setting up Application Infrastructure... 🚀"
+	-@ docker compose -f infra/docker-compose-dev.yml down
+	-@ docker compose -f infra/docker-compose-dev.yml up -d
+
+run_dev:
+	@echo "Running the project in development mode 🚀"
+	-@ docker compose -f infra/docker-compose-dev.yml down
+	-@ docker compose -f infra/docker-compose-dev.yml up
+
+down_dev:
+	@echo "Stopping the project 🛑"
+	-@ docker compose -f infra/docker-compose-dev.yml down
+
+clean:
+	@echo "Cleaning up the project 🧹"
+	-@ sudo rm -rf ./.data
+
 build:
 	@echo "Building the project 🏗️"
 	-@ docker build -t macedo-azevedo-api .
 
-up:
-	@echo "Setting up Application Infrastructure... 🚀"
-	-@ docker compose down
-	-@ docker compose -f docker-compose-dev.yml up -d
+attach:
+	@echo "Attaching to the project 🚀"
+	-@ docker attach macedo-azevedo-api
 
-down:
-	@echo "Stopping the project 🛑"
-	-@ docker compose down
-
-clean:
-	@echo "Cleaning up the project 🧹"
-	-@ docker compose down
-	-@ sudo rm -rf ./.data
+connect:
+	@echo "Connecting to the project 🚀"
+	-@ docker exec -it macedo-azevedo-api /bin/bash
 
 # Run
 run:
 	@echo "Running the project in development mode 🚀"
-	-@ python manage.py runserver
-
+	-@ python src/manage.py runserver
 
 # Setup
 setup_dev:

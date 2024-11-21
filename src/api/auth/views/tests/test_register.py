@@ -40,7 +40,7 @@ class RegisterAPIViewTests(APITestCase):
             response.json(),
             {
                 "password": [
-                    "This password is too short. It must contain at least 8 characters.",
+                    "Esta senha é muito curta. Ela precisa conter pelo menos 8 caracteres.",
                 ],
             },
         )

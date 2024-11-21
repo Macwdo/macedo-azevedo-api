@@ -11,4 +11,4 @@ echo "Apply database migrations"
 uv run manage.py migrate --noinput
 
 echo "Starting server"
-uv run gunicorn -c gunicorn.py core.wsgi:application
+uv run gunicorn -c gunicorn.conf.py core.wsgi:application
