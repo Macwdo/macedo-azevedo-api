@@ -94,10 +94,16 @@ up_prod:
 	-@ docker compose -f infra/docker-compose-prod.yml down
 	-@ docker compose -f infra/docker-compose-prod.yml up -d
 
+up_prod_build:
+	@echo "Running the project in production mode 🚀"
+	-@ docker compose -f infra/docker-compose-prod.yml down
+	-@ docker compose -f infra/docker-compose-prod.yml up -d --build
+
 run_prod:
 	@echo "Running the project in production mode 🚀"
 	-@ docker compose -f infra/docker-compose-prod.yml down
 	-@ docker compose -f infra/docker-compose-prod.yml up
+
 
 down_prod:
 	@echo "Stopping the project in production mode 🛑"
@@ -107,6 +113,11 @@ up_dev:
 	@echo "Setting up Application Infrastructure... 🚀"
 	-@ docker compose -f infra/docker-compose-dev.yml down
 	-@ docker compose -f infra/docker-compose-dev.yml up -d
+
+up_dev_build:
+	@echo "Setting up Application Infrastructure... 🚀"
+	-@ docker compose -f infra/docker-compose-dev.yml down
+	-@ docker compose -f infra/docker-compose-dev.yml up -d --build
 
 run_dev:
 	@echo "Running the project in development mode 🚀"
@@ -121,10 +132,6 @@ clean:
 	@echo "Cleaning up the project 🧹"
 	-@ sudo rm -rf ./.data
 
-build:
-	@echo "Building the project 🏗️"
-	-@ docker build -t macedo-azevedo-api .
-
 attach:
 	@echo "Attaching to the project 🚀"
 	-@ docker attach macedo-azevedo-api
@@ -132,6 +139,24 @@ attach:
 connect:
 	@echo "Connecting to the project 🚀"
 	-@ docker exec -it macedo-azevedo-api /bin/bash
+
+## Build
+build:
+	@echo "Building the project 🏗️"
+	-@ docker build -t macedo-azevedo-api .
+
+build_nginx:
+	@echo "Building nginx 🏗️"
+	-@ cd infra/nginx && docker build -t macedo-azevedo-api-nginx .
+
+# Nginx
+nginx_log_error:
+	@echo "Showing nginx error logs 📜"
+	-@ docker exec -it macedo-azevedo-api-nginx tail -f /var/log/nginx/error.log
+
+nginx_log_access:
+	@echo "Showing nginx access logs 📜"
+	-@ docker exec -it macedo-azevedo-api-nginx cat /var/log/nginx/access.log
 
 # Run
 run:

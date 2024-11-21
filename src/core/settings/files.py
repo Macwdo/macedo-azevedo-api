@@ -1,6 +1,4 @@
-from . import BASE_DIR, DEBUG
-from .aws import *
-from .aws import AWS_STORAGE_BUCKET_NAME
+from . import AWS_STORAGE_BUCKET_NAME, BASE_DIR, DEBUG
 
 # Static files
 STATIC_URL = "/static/"
@@ -13,22 +11,24 @@ STATICFILES_DIRS = [
 MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
 
-S3_FILE_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
-STATICFILES_STORAGE = "django.contrib.staticfiles.storage.StaticFilesStorage"
+# MEDIA_STORAGE = "django.core.files.storage.FileSystemStorage"
+# STATICFILES_STORAGE = "django.contrib.staticfiles.storage.StaticFilesStorage"
 
 # Storages
-STORAGES = {
-    "default": {
-        "BACKEND": S3_FILE_STORAGE,
-        "OPTIONS": {
-            "bucket_name": AWS_STORAGE_BUCKET_NAME,
-            "location": "media",
+if not DEBUG:
+    S3_FILE_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
+    STORAGES = {
+        "default": {
+            "BACKEND": S3_FILE_STORAGE,
+            "OPTIONS": {
+                "bucket_name": AWS_STORAGE_BUCKET_NAME,
+                "location": "media",
+            },
         },
-    },
-    "staticfiles": {
-        "BACKEND": STATICFILES_STORAGE if DEBUG else S3_FILE_STORAGE,
-        "OPTIONS": {
-            "location": "static",
+        "staticfiles": {
+            "BACKEND": S3_FILE_STORAGE,
+            "OPTIONS": {
+                "location": "static",
+            },
         },
-    },
-}
+    }
