@@ -1,5 +1,6 @@
 services:
   app:
+    container_name: macedo-azevedo-api
     image: macedo-azevedo-api
     build:
       context: .
@@ -7,7 +8,7 @@ services:
     ports:
       - 8000:8000
     env_file:
-      - ./dotenv_files/.env.compose
+      - infra/dotenv_files/.env.compose
 
     depends_on:
       - db
@@ -17,8 +18,11 @@ services:
     container_name: macedo-azevedo-api-nginx
     image: macedo-azevedo-api-nginx
     build: 
-      context: nginx/
+      context: infra/nginx/
       dockerfile: Dockerfile
+
+    volumes:
+      - ./src/static:/app/static
 
     ports:
       - 80:80
