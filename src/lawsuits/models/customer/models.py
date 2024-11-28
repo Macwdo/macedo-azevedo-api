@@ -43,7 +43,7 @@ class CustomerReferred(OwnedByLawFirm):
         on_delete=models.CASCADE,
         related_name="referred",
     )
-    source = models.CharField(choices=Source, max_length=50)
+    source = models.CharField(choices=Source.choices, max_length=50)
 
 
 class CustomerDocument(OwnedByLawFirm):

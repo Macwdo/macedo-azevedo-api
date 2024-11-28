@@ -67,8 +67,9 @@ class UsersManagersTests(TestCase):
             assert admin_user.username is None
 
         with pytest.raises(IntegrityError):
+            extra_fields = dict(is_superuser=False)
             self.user_manager.create_user(
                 email="super@user.com",
                 password="password",
-                is_superuser=False,
+                extra_fields=extra_fields,
             )

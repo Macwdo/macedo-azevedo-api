@@ -6,4 +6,4 @@ class UserWithLawFirmPermission(permissions.IsAuthenticated):
         if not super().has_permission(request, view):
             return False
 
-        return getattr(request.user, "current_lawfirm", None)
+        return getattr(request.user, "current_lawfirm", None) is not None
