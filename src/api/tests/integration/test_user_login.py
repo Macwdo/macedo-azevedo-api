@@ -7,8 +7,7 @@ class UserRegisterAndLoginTestCase(APITestCase):
     maxDiff = None
 
     def test_create_user_and_login_then_get_me(self):
-        """
-        1. Create a user
+        """1. Create a user
         2. Login the user
         3. Me endpoint should return the user details.
 

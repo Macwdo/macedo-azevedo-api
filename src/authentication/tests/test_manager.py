@@ -26,7 +26,7 @@ class UsersManagersTests(TestCase):
         assert user.is_active
         assert not user.is_staff
         assert not user.is_superuser
-        try:
+        try:  # noqa: SIM105
             # username is None for the AbstractUser option
             # username does not exist for the AbstractBaseUser option
             assert user.username is None

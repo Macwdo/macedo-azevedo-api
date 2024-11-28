@@ -24,7 +24,7 @@ class RegisterApiView(APIView):
             try:
                 validate_password(password)
             except serializers.ValidationError as e:
-                raise serializers.ValidationError(e.args[0])
+                raise serializers.ValidationError(e.args[0]) from e
 
             return password
 

@@ -1,3 +1,3 @@
-from .apps import *
-from .cors import *
-from .rest_framework import *
+from .apps import *  # noqa
+from .cors import *  # noqa
+from .rest_framework import *  # noqa
