@@ -1,4 +1,3 @@
-
 from . import BASE_DIR
 
 ROOT_URLCONF = "core.urls"

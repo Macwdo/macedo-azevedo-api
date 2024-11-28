@@ -6,177 +6,513 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
     dependencies = [
-        ('common', '0001_initial'),
-        ('lawfirm', '0001_initial'),
+        ("common", "0001_initial"),
+        ("lawfirm", "0001_initial"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='Lawsuit',
+            name="Lawsuit",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
             ],
         ),
         migrations.CreateModel(
-            name='Lawyer',
+            name="Lawyer",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
             ],
         ),
         migrations.CreateModel(
-            name='Customer',
+            name="Customer",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('code', models.CharField(db_index=True, default=common.models.generate_code, editable=False, max_length=20, unique=True)),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('updated_at', models.DateTimeField(auto_now=True)),
-                ('name', models.CharField(max_length=255)),
-                ('gender', models.CharField(choices=[('men', 'Men'), ('woman', 'Woman'), ('not_informed', 'Not informed')], default='not_informed', max_length=20)),
-                ('birth_date', models.DateField(blank=True, null=True)),
-                ('lawfirm', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='%(class)s_lawfirm', to='lawfirm.lawfirm')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "code",
+                    models.CharField(
+                        db_index=True,
+                        default=common.models.generate_code,
+                        editable=False,
+                        max_length=20,
+                        unique=True,
+                    ),
+                ),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                ("updated_at", models.DateTimeField(auto_now=True)),
+                ("name", models.CharField(max_length=255)),
+                (
+                    "gender",
+                    models.CharField(
+                        choices=[
+                            ("men", "Men"),
+                            ("woman", "Woman"),
+                            ("not_informed", "Not informed"),
+                        ],
+                        default="not_informed",
+                        max_length=20,
+                    ),
+                ),
+                ("birth_date", models.DateField(blank=True, null=True)),
+                (
+                    "lawfirm",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="%(class)s_lawfirm",
+                        to="lawfirm.lawfirm",
+                    ),
+                ),
             ],
             options={
-                'abstract': False,
+                "abstract": False,
             },
         ),
         migrations.CreateModel(
-            name='CustomerAddress',
+            name="CustomerAddress",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('code', models.CharField(db_index=True, default=common.models.generate_code, editable=False, max_length=20, unique=True)),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('updated_at', models.DateTimeField(auto_now=True)),
-                ('name', models.CharField(max_length=100)),
-                ('address', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='common.address')),
-                ('customer', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='lawsuits.customer')),
-                ('lawfirm', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='%(class)s_lawfirm', to='lawfirm.lawfirm')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "code",
+                    models.CharField(
+                        db_index=True,
+                        default=common.models.generate_code,
+                        editable=False,
+                        max_length=20,
+                        unique=True,
+                    ),
+                ),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                ("updated_at", models.DateTimeField(auto_now=True)),
+                ("name", models.CharField(max_length=100)),
+                (
+                    "address",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE, to="common.address"
+                    ),
+                ),
+                (
+                    "customer",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="lawsuits.customer",
+                    ),
+                ),
+                (
+                    "lawfirm",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="%(class)s_lawfirm",
+                        to="lawfirm.lawfirm",
+                    ),
+                ),
             ],
             options={
-                'abstract': False,
+                "abstract": False,
             },
         ),
         migrations.CreateModel(
-            name='CustomerDocument',
+            name="CustomerDocument",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('code', models.CharField(db_index=True, default=common.models.generate_code, editable=False, max_length=20, unique=True)),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('updated_at', models.DateTimeField(auto_now=True)),
-                ('name', models.CharField(max_length=100)),
-                ('description', models.CharField(max_length=255)),
-                ('customer', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='lawsuits.customer')),
-                ('document_type', models.ForeignKey(default=common.models.DocumentType.get_default, on_delete=django.db.models.deletion.SET_DEFAULT, to='common.documenttype')),
-                ('lawfirm', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='%(class)s_lawfirm', to='lawfirm.lawfirm')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "code",
+                    models.CharField(
+                        db_index=True,
+                        default=common.models.generate_code,
+                        editable=False,
+                        max_length=20,
+                        unique=True,
+                    ),
+                ),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                ("updated_at", models.DateTimeField(auto_now=True)),
+                ("name", models.CharField(max_length=100)),
+                ("description", models.CharField(max_length=255)),
+                (
+                    "customer",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="lawsuits.customer",
+                    ),
+                ),
+                (
+                    "document_type",
+                    models.ForeignKey(
+                        default=common.models.DocumentType.get_default,
+                        on_delete=django.db.models.deletion.SET_DEFAULT,
+                        to="common.documenttype",
+                    ),
+                ),
+                (
+                    "lawfirm",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="%(class)s_lawfirm",
+                        to="lawfirm.lawfirm",
+                    ),
+                ),
             ],
             options={
-                'abstract': False,
+                "abstract": False,
             },
         ),
         migrations.CreateModel(
-            name='CustomerDocumentFile',
+            name="CustomerDocumentFile",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('code', models.CharField(db_index=True, default=common.models.generate_code, editable=False, max_length=20, unique=True)),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('updated_at', models.DateTimeField(auto_now=True)),
-                ('customer_document', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='lawsuits.customerdocument')),
-                ('file', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='common.file')),
-                ('lawfirm', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='%(class)s_lawfirm', to='lawfirm.lawfirm')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "code",
+                    models.CharField(
+                        db_index=True,
+                        default=common.models.generate_code,
+                        editable=False,
+                        max_length=20,
+                        unique=True,
+                    ),
+                ),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                ("updated_at", models.DateTimeField(auto_now=True)),
+                (
+                    "customer_document",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="lawsuits.customerdocument",
+                    ),
+                ),
+                (
+                    "file",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE, to="common.file"
+                    ),
+                ),
+                (
+                    "lawfirm",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="%(class)s_lawfirm",
+                        to="lawfirm.lawfirm",
+                    ),
+                ),
             ],
             options={
-                'abstract': False,
+                "abstract": False,
             },
         ),
         migrations.CreateModel(
-            name='CustomerEmail',
+            name="CustomerEmail",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('code', models.CharField(db_index=True, default=common.models.generate_code, editable=False, max_length=20, unique=True)),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('updated_at', models.DateTimeField(auto_now=True)),
-                ('name', models.CharField(max_length=100)),
-                ('email', models.EmailField(max_length=254)),
-                ('customer', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='lawsuits.customer')),
-                ('lawfirm', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='%(class)s_lawfirm', to='lawfirm.lawfirm')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "code",
+                    models.CharField(
+                        db_index=True,
+                        default=common.models.generate_code,
+                        editable=False,
+                        max_length=20,
+                        unique=True,
+                    ),
+                ),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                ("updated_at", models.DateTimeField(auto_now=True)),
+                ("name", models.CharField(max_length=100)),
+                ("email", models.EmailField(max_length=254)),
+                (
+                    "customer",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="lawsuits.customer",
+                    ),
+                ),
+                (
+                    "lawfirm",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="%(class)s_lawfirm",
+                        to="lawfirm.lawfirm",
+                    ),
+                ),
             ],
             options={
-                'abstract': False,
+                "abstract": False,
             },
         ),
         migrations.CreateModel(
-            name='CustomerPhone',
+            name="CustomerPhone",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('code', models.CharField(db_index=True, default=common.models.generate_code, editable=False, max_length=20, unique=True)),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('updated_at', models.DateTimeField(auto_now=True)),
-                ('name', models.CharField(max_length=100)),
-                ('customer', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='lawsuits.customer')),
-                ('lawfirm', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='%(class)s_lawfirm', to='lawfirm.lawfirm')),
-                ('phone', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='common.phone')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "code",
+                    models.CharField(
+                        db_index=True,
+                        default=common.models.generate_code,
+                        editable=False,
+                        max_length=20,
+                        unique=True,
+                    ),
+                ),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                ("updated_at", models.DateTimeField(auto_now=True)),
+                ("name", models.CharField(max_length=100)),
+                (
+                    "customer",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="lawsuits.customer",
+                    ),
+                ),
+                (
+                    "lawfirm",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="%(class)s_lawfirm",
+                        to="lawfirm.lawfirm",
+                    ),
+                ),
+                (
+                    "phone",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE, to="common.phone"
+                    ),
+                ),
             ],
             options={
-                'abstract': False,
+                "abstract": False,
             },
         ),
         migrations.CreateModel(
-            name='CustomerReferred',
+            name="CustomerReferred",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('code', models.CharField(db_index=True, default=common.models.generate_code, editable=False, max_length=20, unique=True)),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('updated_at', models.DateTimeField(auto_now=True)),
-                ('comment', models.TextField()),
-                ('source', models.CharField(choices=[('website', 'Website'), ('social_network', 'Social Network'), ('lawyer_reffer', 'Lawyer Reffer'), ('customer_reffer', 'Customer Reffer')], max_length=50)),
-                ('customer_refer', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='referred', to='lawsuits.customer')),
-                ('lawfirm', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='%(class)s_lawfirm', to='lawfirm.lawfirm')),
-                ('lawyer_refer', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='referred', to='lawsuits.lawyer')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "code",
+                    models.CharField(
+                        db_index=True,
+                        default=common.models.generate_code,
+                        editable=False,
+                        max_length=20,
+                        unique=True,
+                    ),
+                ),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                ("updated_at", models.DateTimeField(auto_now=True)),
+                ("comment", models.TextField()),
+                (
+                    "source",
+                    models.CharField(
+                        choices=[
+                            ("website", "Website"),
+                            ("social_network", "Social Network"),
+                            ("lawyer_reffer", "Lawyer Reffer"),
+                            ("customer_reffer", "Customer Reffer"),
+                        ],
+                        max_length=50,
+                    ),
+                ),
+                (
+                    "customer_refer",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="referred",
+                        to="lawsuits.customer",
+                    ),
+                ),
+                (
+                    "lawfirm",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="%(class)s_lawfirm",
+                        to="lawfirm.lawfirm",
+                    ),
+                ),
+                (
+                    "lawyer_refer",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="referred",
+                        to="lawsuits.lawyer",
+                    ),
+                ),
             ],
             options={
-                'abstract': False,
+                "abstract": False,
             },
         ),
         migrations.AddField(
-            model_name='customer',
-            name='reffered',
-            field=models.OneToOneField(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, to='lawsuits.customerreferred'),
+            model_name="customer",
+            name="reffered",
+            field=models.OneToOneField(
+                blank=True,
+                null=True,
+                on_delete=django.db.models.deletion.SET_NULL,
+                to="lawsuits.customerreferred",
+            ),
         ),
         migrations.CreateModel(
-            name='JuridicalPersonCustomer',
+            name="JuridicalPersonCustomer",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('code', models.CharField(db_index=True, default=common.models.generate_code, editable=False, max_length=20, unique=True)),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('updated_at', models.DateTimeField(auto_now=True)),
-                ('social_reason', models.CharField(max_length=255)),
-                ('cnpj', models.CharField(max_length=25)),
-                ('name', models.CharField(max_length=255)),
-                ('birth_date', models.DateField()),
-                ('customer', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='lawsuits.customer')),
-                ('lawfirm', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='%(class)s_lawfirm', to='lawfirm.lawfirm')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "code",
+                    models.CharField(
+                        db_index=True,
+                        default=common.models.generate_code,
+                        editable=False,
+                        max_length=20,
+                        unique=True,
+                    ),
+                ),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                ("updated_at", models.DateTimeField(auto_now=True)),
+                ("social_reason", models.CharField(max_length=255)),
+                ("cnpj", models.CharField(max_length=25)),
+                ("name", models.CharField(max_length=255)),
+                ("birth_date", models.DateField()),
+                (
+                    "customer",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="lawsuits.customer",
+                    ),
+                ),
+                (
+                    "lawfirm",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="%(class)s_lawfirm",
+                        to="lawfirm.lawfirm",
+                    ),
+                ),
             ],
             options={
-                'abstract': False,
+                "abstract": False,
             },
         ),
         migrations.CreateModel(
-            name='PhysicalPersonCustomer',
+            name="PhysicalPersonCustomer",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('code', models.CharField(db_index=True, default=common.models.generate_code, editable=False, max_length=20, unique=True)),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('updated_at', models.DateTimeField(auto_now=True)),
-                ('cpf', models.CharField(max_length=20)),
-                ('rg', models.CharField(max_length=20)),
-                ('customer', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='lawsuits.customer')),
-                ('lawfirm', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='%(class)s_lawfirm', to='lawfirm.lawfirm')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "code",
+                    models.CharField(
+                        db_index=True,
+                        default=common.models.generate_code,
+                        editable=False,
+                        max_length=20,
+                        unique=True,
+                    ),
+                ),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                ("updated_at", models.DateTimeField(auto_now=True)),
+                ("cpf", models.CharField(max_length=20)),
+                ("rg", models.CharField(max_length=20)),
+                (
+                    "customer",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="lawsuits.customer",
+                    ),
+                ),
+                (
+                    "lawfirm",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="%(class)s_lawfirm",
+                        to="lawfirm.lawfirm",
+                    ),
+                ),
             ],
             options={
-                'abstract': False,
+                "abstract": False,
             },
         ),
     ]

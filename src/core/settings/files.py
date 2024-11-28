@@ -3,9 +3,7 @@ from . import AWS_STORAGE_BUCKET_NAME, BASE_DIR, DEBUG
 # Static files
 STATIC_URL = "/static/"
 STATIC_ROOT = BASE_DIR / "static"
-STATICFILES_DIRS = [
-    BASE_DIR / "staticfiles"
-]
+STATICFILES_DIRS = [BASE_DIR / "staticfiles"]
 
 # Media files
 MEDIA_URL = "/media/"
