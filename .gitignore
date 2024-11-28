@@ -1,5 +1,6 @@
 .data/
 static
+infra/terraform/keys/**
 
 # Cache files #
 **_cache**/
