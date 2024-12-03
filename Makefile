@@ -174,4 +174,4 @@ setup_dev:
 	-@ uv sync
 
 	@echo "Copying the .env file 🚀"
-	-@ cp dotenv_files/.env.sample .env
+	-@ cp infra/dotenv_files/.env.sample .env
