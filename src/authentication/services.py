@@ -15,7 +15,7 @@ def create_user(
     phone_ddi: str,
     phone_ddd: str,
 ) -> User:
-    user = User.objects.create_user(
+    user = User.objects.create_user(  # type: ignore
         email=email,
         password=password,
         first_name=first_name,

@@ -5,11 +5,14 @@
     "python.experiments.optInto": [
         "pythonTestAdapter"
     ],
+    "ruff.lint.enable": true,
+    "ruff.nativeServer": "auto",
+    "ruff.enable": true,
     "editor.codeActionsOnSave": {
         "source.fixAll.ruff": "always",
         "source.organizeImports.ruff": "always",
         // "source.unusedImports": "always",
     },
-    // "editor.formatOnSave": true,
+    "editor.formatOnSave": true,
     "debugpy.debugJustMyCode": false
 }

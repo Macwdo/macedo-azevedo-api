@@ -10,7 +10,7 @@ from lawfirm.models import Account
 STORAGES = {
     "default": {
         "BACKEND": "django.core.files.storage.memory.InMemoryStorage",
-    }
+    },
 }
 
 

@@ -26,7 +26,7 @@ def upload_account_image(
     *,
     account: Account,
     image,
-) -> File:
+) -> File | None:
     file = File(
         file=image,
         source=File.Source.ACCOUNT_IMAGE,

@@ -26,7 +26,7 @@ class UsersManagersTests(TestCase):
         assert user.is_active
         assert not user.is_staff
         assert not user.is_superuser
-        try:
+        try:  # noqa: SIM105
             # username is None for the AbstractUser option
             # username does not exist for the AbstractBaseUser option
             assert user.username is None
@@ -67,8 +67,9 @@ class UsersManagersTests(TestCase):
             assert admin_user.username is None
 
         with pytest.raises(IntegrityError):
+            extra_fields = dict(is_superuser=False)
             self.user_manager.create_user(
                 email="super@user.com",
                 password="password",
-                is_superuser=False,
+                extra_fields=extra_fields,
             )
